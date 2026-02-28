@@ -1,0 +1,12 @@
+services:
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      DJANGO_SETTINGS_MODULE: projttgs.settings
+      ALLOWED_HOSTS: "localhost,127.0.0.1,0.0.0.0"
+      # add SECRET_KEY, DEBUG, ALLOWED_HOSTS via .env ideally
+    volumes:
+      - .:/app
+    command: sh -c "python projttgs/manage.py migrate && python projttgs/manage.py runserver 0.0.0.0:8000"

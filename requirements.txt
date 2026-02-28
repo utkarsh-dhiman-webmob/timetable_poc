@@ -1,0 +1,4 @@
+# requirements.txt for Docker build
+Django==3.0.*
+xhtml2pdf
+# Add any other dependencies below
