@@ -1,155 +1,286 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>WebMob | Get Started</title>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-	<script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
-	<link rel="stylesheet" type="text/css" href="static/css/aboutus.css">
-    <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/carousel/">
+{% extends "base_dashboard.html" %}
+{% load static %}
 
-    <style>
-        body {
-    padding-top: 3.5rem;
-}
+{% block title %}TTGS | Dashboard{% endblock %}
+{% block nav_admindash %}active{% endblock %}
 
-nav {
-    font-family: sans-serif;
-}
+{% block extra_head %}
+<style>
+  .dash-wrapper { padding: 2rem; }
 
-.navbar-brand {
-    font-size: 20px;
-    font-family: Georgia, 'Times New Roman', Times, serif;
-}
-    </style>
+  /* ── Hero ── */
+  .dash-hero {
+    background: linear-gradient(135deg, #1565c0 0%, #0d47a1 100%);
+    border-radius: 16px;
+    padding: 2.5rem 2.75rem;
+    margin-bottom: 1.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+  }
+  .dash-hero::before {
+    content: '';
+    position: absolute; right: -50px; top: -60px;
+    width: 260px; height: 260px; border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+  }
+  .dash-hero::after {
+    content: '';
+    position: absolute; right: 80px; bottom: -90px;
+    width: 200px; height: 200px; border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+  }
+  .dash-hero-text h2 {
+    color: #fff; font-size: 1.75rem; font-weight: 700;
+    margin: 0 0 0.5rem; text-align: left;
+  }
+  .dash-hero-text p {
+    color: rgba(255,255,255,0.8); margin: 0 0 1.6rem;
+    font-size: 0.92rem; max-width: 530px; line-height: 1.6;
+  }
+  .dash-hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn-hero-white {
+    background: #fff; color: #1565c0; border: none;
+    border-radius: 8px; padding: 0.55rem 1.5rem;
+    font-weight: 700; font-size: 0.88rem;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.18);
+    transition: transform 0.15s, box-shadow 0.15s;
+    text-decoration: none; display: inline-block;
+  }
+  .btn-hero-white:hover { transform: translateY(-2px); box-shadow: 0 7px 20px rgba(0,0,0,0.22); color: #1565c0; text-decoration: none; }
+  .btn-hero-outline {
+    background: transparent; color: #fff;
+    border: 1.5px solid rgba(255,255,255,0.55);
+    border-radius: 8px; padding: 0.55rem 1.5rem;
+    font-weight: 600; font-size: 0.88rem;
+    transition: background 0.15s;
+    text-decoration: none; display: inline-block;
+  }
+  .btn-hero-outline:hover { background: rgba(255,255,255,0.12); color: #fff; text-decoration: none; }
+  .dash-hero-icon {
+    font-size: 7rem; color: rgba(255,255,255,0.1);
+    position: relative; z-index: 1; flex-shrink: 0;
+  }
 
-</head>
-<body>
-    <form id="form1">
-        <header>
-            <!--Navigation Bar-->
-			<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-                <a class="navbar-brand" href="https://www.webmobinfo.ch/"><b>WEBMOB</b></a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarCollapse">
-                    <ul class="navbar-nav ml-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="{% url 'admindash' %}">Get Started</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'addInstructors' %}">Add Teachers</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'addRooms' %}">Add Rooms</a>
-                    </li>
-                    <li class="nav-item">
-		                <a class="nav-link" href="{% url 'addTimings' %}">Add Timings</a>
-		            </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'addCourses' %}">Add Courses</a>
-                    </li>
-                    <li class="nav-item">
-			            <a class="nav-link" href="{% url 'addDepts' %}">Add Departments</a>
-		            </li>
-                    <li class="nav-item">
-			            <a class="nav-link" href="{% url 'addSections' %}">Add Sections</a>
-		            </li>
-                    <li class="nav-item">
-			            <a class="nav-link" href="{% url 'generate' %}">Generate Timetable</a>
-		            </li>
-                    <li class="nav-item active">
-			            <a class="nav-link">|</a>
-		            </li>
-                    <li class="nav-item dropdown">
-		                <a class="nav-link dropdown-toggle" href="#" id="dropdown03" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Welcome, {{ user.first_name }}</a>
-			            <div class="dropdown-menu" aria-labelledby="dropdown03">
-			                <a class="dropdown-item" href="{% url 'password_change' %}">Change Password</a>
-				            <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
-			            </div>
-		            </li>
-                    </ul>
-                </div>
-            </nav>
-        </header>
+  /* ── Stats ── */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.75rem;
+  }
+  .stat-card {
+    background: #fff; border-radius: 12px;
+    padding: 1.15rem 1.1rem;
+    box-shadow: 0 2px 12px rgba(21,101,192,0.07);
+    display: flex; align-items: center; gap: 13px;
+    transition: transform 0.18s, box-shadow 0.18s;
+    text-decoration: none;
+  }
+  .stat-card:hover { transform: translateY(-3px); box-shadow: 0 6px 22px rgba(21,101,192,0.13); text-decoration: none; }
+  .stat-icon-box {
+    width: 46px; height: 46px; border-radius: 11px;
+    background: linear-gradient(135deg, #1565c0, #0d47a1);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .stat-icon-box i { color: #fff; font-size: 1rem; }
+  .stat-count { font-size: 1.5rem; font-weight: 700; color: #1a1a2e; line-height: 1; }
+  .stat-label { font-size: 0.7rem; color: #9ca3af; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 3px; }
 
-         <main role="main">
+  /* ── Steps ── */
+  .section-heading {
+    font-weight: 700; color: #1a1a2e; font-size: 1.05rem;
+    margin-bottom: 1rem; text-align: left;
+  }
+  .section-heading span { color: #1565c0; }
 
-  <div class="jumbotron">
-    <div class="container">
-      <h1 class="display-4">Hello {{ user.first_name }}! Lets Get Started with Webmob's TTGS</h1>
-      <p>Welcome to Webmob's timetable generation system!, a timetable management system for colleges and universities to schedule their organization's timetable.
-      </p>
-      <p><a class="btn btn-primary btn-lg" href="{% url 'addInstructors' %}" role="button">Get Started &raquo;</a>&nbsp;&nbsp;&nbsp;<a class="btn btn-primary btn-lg" href="{% url 'contact' %}" role="button">Contact Us &raquo;</a></p>
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  .step-card {
+    background: #fff; border-radius: 13px;
+    padding: 1.4rem 1.3rem;
+    box-shadow: 0 2px 14px rgba(21,101,192,0.07);
+    position: relative;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    text-decoration: none; display: block;
+    border: 1.5px solid transparent;
+  }
+  .step-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(21,101,192,0.15); border-color: #e0eaff; text-decoration: none; }
+  .step-num {
+    position: absolute; top: 14px; right: 14px;
+    width: 26px; height: 26px;
+    background: #e8f0fe; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.72rem; font-weight: 700; color: #1565c0;
+  }
+  .step-icon-wrap {
+    width: 50px; height: 50px; border-radius: 13px;
+    background: linear-gradient(135deg, #1565c0, #0d47a1);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 1rem;
+  }
+  .step-icon-wrap i { color: #fff; font-size: 1.2rem; }
+  .step-title { font-weight: 700; color: #1a1a2e; font-size: 0.92rem; margin-bottom: 0.4rem; text-align: left; }
+  .step-desc { font-size: 0.79rem; color: #6b7280; line-height: 1.55; text-align: left; }
+  .step-go { margin-top: 1rem; font-size: 0.8rem; font-weight: 600; color: #1565c0; display: flex; align-items: center; gap: 5px; }
+  .step-go i { font-size: 0.7rem; transition: transform 0.15s; }
+  .step-card:hover .step-go i { transform: translateX(3px); }
+
+  /* Generate card — inverted colours */
+  .step-card.step-final { background: linear-gradient(135deg, #1565c0, #0d47a1); border-color: transparent; }
+  .step-card.step-final:hover { border-color: #1565c0; }
+  .step-card.step-final .step-num { background: rgba(255,255,255,0.2); color: #fff; }
+  .step-card.step-final .step-icon-wrap { background: rgba(255,255,255,0.18); }
+  .step-card.step-final .step-title { color: #fff; }
+  .step-card.step-final .step-desc { color: rgba(255,255,255,0.75); }
+  .step-card.step-final .step-go { color: rgba(255,255,255,0.9); }
+
+  /* ── Responsive ── */
+  @media (max-width: 1200px) {
+    .steps-grid { grid-template-columns: repeat(3, 1fr); }
+    .stats-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (max-width: 768px) {
+    .steps-grid { grid-template-columns: repeat(2, 1fr); }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .dash-hero { flex-direction: column; gap: 1rem; }
+    .dash-hero-icon { display: none; }
+  }
+  @media (max-width: 480px) {
+    .steps-grid { grid-template-columns: 1fr; }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="dash-wrapper">
+
+  <!-- ── Hero ── -->
+  <div class="dash-hero">
+    <div class="dash-hero-text">
+      <h2>Welcome back, {{ user.first_name|default:user.username }}!</h2>
+      <p>Manage your institution's timetable from one place. Add your data step by step, then let the genetic algorithm generate a conflict-free schedule automatically.</p>
+      <div class="dash-hero-actions">
+        <a href="{% url 'editinstructor' %}" class="btn-hero-white"><i class="fas fa-play mr-2"></i>Get Started</a>
+        <a href="{% url 'generate' %}" class="btn-hero-outline"><i class="fas fa-magic mr-2"></i>Generate Timetable</a>
+      </div>
     </div>
+    <i class="fas fa-calendar-alt dash-hero-icon"></i>
   </div>
 
-  <div class="container">
-
-    <div class="row">
-      <div class="col-md-4">
-        <h2>1. Add Teachers</h2>
-        <p>Navigate to the "Add Teachers" section and add the corresponding details. Incorrect Details can also be removed via the "Edit Teacher" option.</p>
-
+  <!-- ── Stats ── -->
+  <div class="stats-grid">
+    <a href="{% url 'editinstructor' %}" class="stat-card">
+      <div class="stat-icon-box"><i class="fas fa-chalkboard-teacher"></i></div>
+      <div>
+        <div class="stat-count">{{ teacher_count }}</div>
+        <div class="stat-label">Teachers</div>
       </div>
-      <div class="col-md-4">
-        <h2>2. Add Rooms</h2>
-        <p>Navigate to the "Add Rooms" section and add the corresponding details. Incorrect Details can also be removed via the "Edit Rooms" option.</p>
-
+    </a>
+    <a href="{% url 'editrooms' %}" class="stat-card">
+      <div class="stat-icon-box"><i class="fas fa-door-open"></i></div>
+      <div>
+        <div class="stat-count">{{ room_count }}</div>
+        <div class="stat-label">Rooms</div>
       </div>
-      <div class="col-md-4">
-        <h2>3. Add Timings</h2>
-        <p>Navigate to the "Add Timings" section and add the corresponding details. Incorrect Details can also be removed via the "Edit Timings" option.</p>
-
+    </a>
+    <a href="{% url 'editmeetingtime' %}" class="stat-card">
+      <div class="stat-icon-box"><i class="fas fa-clock"></i></div>
+      <div>
+        <div class="stat-count">{{ timing_count }}</div>
+        <div class="stat-label">Timings</div>
       </div>
-    </div>
-    <br>
-    <div class="row">
-      <div class="col-md-4">
-        <h2>4. Add Courses</h2>
-        <p>Navigate to the "Add Courses" section and add the corresponding details. Incorrect Details can also be removed via the "Edit Courses" option.</p>
-
+    </a>
+    <a href="{% url 'editcourse' %}" class="stat-card">
+      <div class="stat-icon-box"><i class="fas fa-book-open"></i></div>
+      <div>
+        <div class="stat-count">{{ course_count }}</div>
+        <div class="stat-label">Courses</div>
       </div>
-      <div class="col-md-4">
-        <h2>5. Add Departments</h2>
-        <p>Navigate to the "Add Departments" section and add the corresponding details. Incorrect Details can also be removed via the "Edit Departments" option.</p>
-
+    </a>
+    <a href="{% url 'editdepartment' %}" class="stat-card">
+      <div class="stat-icon-box"><i class="fas fa-building"></i></div>
+      <div>
+        <div class="stat-count">{{ dept_count }}</div>
+        <div class="stat-label">Departments</div>
       </div>
-      <div class="col-md-4">
-        <h2>6. Add Sections</h2>
-        <p>Navigate to the "Add Sections" section and add the corresponding details. Incorrect Details can also be removed via the "Edit Sections" option.</p>
-
+    </a>
+    <a href="{% url 'editsection' %}" class="stat-card">
+      <div class="stat-icon-box"><i class="fas fa-layer-group"></i></div>
+      <div>
+        <div class="stat-count">{{ section_count }}</div>
+        <div class="stat-label">Sections</div>
       </div>
-    </div>
-
-     <br>
-
-    <div class="row">
-      <div class="col-md-4">
-        <h2>7. Generate Timetable</h2>
-        <p>Navigate to the "Generate Timetable" Section and click on Generate Timetable and wait patiently as our algorithm works its magic.</p>
-      </div>
-
-      </div>
-    </div>
-
-    <hr>
-
+    </a>
   </div>
 
-</main>
+  <!-- ── Workflow Steps ── -->
+  <p class="section-heading"><span>Step-by-step</span> workflow guide</p>
+  <div class="steps-grid">
 
-<footer class="container">
-  <p>&copy; <a href="https://www.webmobinfo.ch/">webmobinfo.ch</a>. All Rights Reserved</p>
-</footer>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-      <script>window.jQuery || document.write('<script src="../assets/js/vendor/jquery.slim.min.js"><\/script>')</script><script src="../assets/dist/js/bootstrap.bundle.js"></script>
+    <a href="{% url 'editinstructor' %}" class="step-card">
+      <span class="step-num">1</span>
+      <div class="step-icon-wrap"><i class="fas fa-chalkboard-teacher"></i></div>
+      <div class="step-title">Add Teachers</div>
+      <div class="step-desc">Register teaching staff with their unique IDs. Remove incorrect entries any time.</div>
+      <div class="step-go">Go to Teachers <i class="fas fa-arrow-right"></i></div>
+    </a>
 
-    </form>
-</body>
-</html>
+    <a href="{% url 'editrooms' %}" class="step-card">
+      <span class="step-num">2</span>
+      <div class="step-icon-wrap"><i class="fas fa-door-open"></i></div>
+      <div class="step-title">Add Rooms</div>
+      <div class="step-desc">Enter classrooms and labs with their seating capacities for accurate scheduling.</div>
+      <div class="step-go">Go to Rooms <i class="fas fa-arrow-right"></i></div>
+    </a>
+
+    <a href="{% url 'editmeetingtime' %}" class="step-card">
+      <span class="step-num">3</span>
+      <div class="step-icon-wrap"><i class="fas fa-clock"></i></div>
+      <div class="step-title">Add Timings</div>
+      <div class="step-desc">Define the days and time slots available for scheduling classes each week.</div>
+      <div class="step-go">Go to Timings <i class="fas fa-arrow-right"></i></div>
+    </a>
+
+    <a href="{% url 'editcourse' %}" class="step-card">
+      <span class="step-num">4</span>
+      <div class="step-icon-wrap"><i class="fas fa-book-open"></i></div>
+      <div class="step-title">Add Courses</div>
+      <div class="step-desc">Add courses with their capacity and assign the teachers responsible for each.</div>
+      <div class="step-go">Go to Courses <i class="fas fa-arrow-right"></i></div>
+    </a>
+
+    <a href="{% url 'editdepartment' %}" class="step-card">
+      <span class="step-num">5</span>
+      <div class="step-icon-wrap"><i class="fas fa-building"></i></div>
+      <div class="step-title">Add Departments</div>
+      <div class="step-desc">Create departments and link them to the courses they offer to students.</div>
+      <div class="step-go">Go to Departments <i class="fas fa-arrow-right"></i></div>
+    </a>
+
+    <a href="{% url 'editsection' %}" class="step-card">
+      <span class="step-num">6</span>
+      <div class="step-icon-wrap"><i class="fas fa-layer-group"></i></div>
+      <div class="step-title">Add Sections</div>
+      <div class="step-desc">Define class sections, their department, and how many classes run per week.</div>
+      <div class="step-go">Go to Sections <i class="fas fa-arrow-right"></i></div>
+    </a>
+
+    <a href="{% url 'generate' %}" class="step-card step-final">
+      <span class="step-num">7</span>
+      <div class="step-icon-wrap"><i class="fas fa-magic"></i></div>
+      <div class="step-title">Generate Timetable</div>
+      <div class="step-desc">Run the genetic algorithm to produce a conflict-free timetable automatically.</div>
+      <div class="step-go">Generate Now <i class="fas fa-arrow-right"></i></div>
+    </a>
+
+  </div>
+</div>
+{% endblock %}

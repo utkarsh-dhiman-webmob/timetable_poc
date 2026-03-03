@@ -1,110 +1,478 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>WebMob | About Us</title>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-	<script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
-	<link rel="stylesheet" type="text/css" href="static/css/aboutus.css">
-    <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/carousel/">
+{% extends "base_public.html" %}
+{% load static %}
 
-    <style>
-        body {
-    padding-top: 3.5rem;
-}
+{% block title %}TTGS | About Us{% endblock %}
+{% block nav_about %}active{% endblock %}
 
-nav {
-    font-family: sans-serif;
-}
+{% block extra_head %}
+<style>
+  /* ── Page hero ── */
+  .about-hero {
+    background: linear-gradient(135deg, #1565c0 0%, #0d47a1 100%);
+    padding: 5.5rem 0 4rem;
+    position: relative; overflow: hidden;
+    text-align: center;
+  }
+  .about-hero::before {
+    content: ''; position: absolute; left: -80px; top: -80px;
+    width: 340px; height: 340px; border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+  }
+  .about-hero::after {
+    content: ''; position: absolute; right: -60px; bottom: -100px;
+    width: 280px; height: 280px; border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+  }
+  .about-hero-tag {
+    display: inline-flex; align-items: center; gap: 7px;
+    background: rgba(255,255,255,0.14);
+    border: 1px solid rgba(255,255,255,0.22);
+    border-radius: 50px; padding: 0.3rem 1rem;
+    color: rgba(255,255,255,0.9); font-size: 0.78rem;
+    font-weight: 600; letter-spacing: 0.05em; margin-bottom: 1.25rem;
+  }
+  .about-hero h1 {
+    color: #fff; font-size: 2.8rem; font-weight: 700;
+    margin-bottom: 1rem; line-height: 1.2;
+    position: relative; z-index: 1;
+  }
+  .about-hero p {
+    color: rgba(255,255,255,0.78); font-size: 1rem;
+    max-width: 600px; margin: 0 auto 2rem; line-height: 1.75;
+    position: relative; z-index: 1;
+  }
+  .about-hero .hero-actions {
+    display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+    position: relative; z-index: 1;
+  }
+  .btn-hero-white {
+    background: #fff; color: #1565c0; border: none; border-radius: 10px;
+    padding: 0.7rem 1.75rem; font-weight: 700; font-size: 0.92rem;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+    text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .btn-hero-white:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(0,0,0,0.25); color: #1565c0; text-decoration: none; }
+  .btn-hero-outline {
+    background: transparent; color: #fff;
+    border: 1.5px solid rgba(255,255,255,0.5); border-radius: 10px;
+    padding: 0.7rem 1.75rem; font-weight: 600; font-size: 0.92rem;
+    text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+    transition: background 0.15s;
+  }
+  .btn-hero-outline:hover { background: rgba(255,255,255,0.12); color: #fff; text-decoration: none; }
 
-.navbar-brand {
-    font-size: 20px;
-    font-family: Georgia, 'Times New Roman', Times, serif;
-}
-    </style>
+  /* ── Sections ── */
+  .about-section { padding: 5rem 0; }
+  .about-section.alt { background: #f4f7fe; }
+  .section-tag {
+    font-size: 0.75rem; font-weight: 700; color: #1565c0;
+    text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem;
+  }
+  .section-title {
+    font-size: 1.9rem; font-weight: 700; color: #1a1a2e; margin-bottom: 0.75rem;
+  }
+  .section-sub {
+    font-size: 0.93rem; color: #6b7280; line-height: 1.75; max-width: 540px;
+  }
 
-</head>
-<body>
-    <form id="form1">
-        <header>
-            <!--Navigation Bar-->
-			<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-                <a class="navbar-brand" href="https://www.webmobinfo.ch/"><b>WEBMOB</b></a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarCollapse">
-                    <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'index' %}">Home</a>
-                    </li>
-                    <li class="nav-item active">
-                        <a class="nav-link" href="{% url 'about' %}">About Us</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'help' %}">Help</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'contact' %}">Contact Us</a>
-                    </li>
-                    <li class="nav-item">
-		                <a class="nav-link" href="{% url 'login' %}">Login</a>
-		            </li>
-		            <li class="nav-item">
-			            <a class="nav-link" href="{% url 'register' %}">Sign Up</a>
-		            </li>
-                    </ul>
-                </div>
-            </nav>
-        </header>
+  /* ── Mission paragraph ── */
+  .mission-text {
+    font-size: 1rem; color: #374151; line-height: 1.85;
+  }
+  .mission-highlight {
+    background: #e8f0fe; border-left: 4px solid #1565c0;
+    border-radius: 0 10px 10px 0;
+    padding: 1rem 1.25rem; margin: 1.5rem 0;
+    font-size: 0.95rem; color: #1a1a2e; line-height: 1.7;
+    font-style: italic;
+  }
 
-         <main role="main">
+  /* ── Value cards ── */
+  .value-card {
+    background: #fff; border-radius: 16px;
+    padding: 1.75rem 1.5rem;
+    box-shadow: 0 2px 16px rgba(21,101,192,0.07);
+    height: 100%;
+    border: 1.5px solid transparent;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  }
+  .value-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 32px rgba(21,101,192,0.12);
+    border-color: #e0eaff;
+  }
+  .value-icon {
+    width: 52px; height: 52px; border-radius: 13px;
+    background: linear-gradient(135deg, #1565c0, #0d47a1);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 1.1rem;
+  }
+  .value-icon i { color: #fff; font-size: 1.2rem; }
+  .value-title { font-size: 1rem; font-weight: 700; color: #1a1a2e; margin-bottom: 0.45rem; }
+  .value-desc  { font-size: 0.85rem; color: #6b7280; line-height: 1.65; }
 
-  <div class="jumbotron">
-    <div class="container">
-    <h1 class="display-4">About Webmob</h1>
-        <p>Welcome to Webmob's timetable generation system, a timetable management system for colleges and universities to schedule their organization's timetable.
-      </p>
-      <p><a class="btn btn-primary btn-lg" href="{% url 'contact' %}" role="button">Contact Us &raquo;</a></p>
-    </div>
-  </div>
+  /* ── Algorithm section ── */
+  .algo-step {
+    display: flex; gap: 1.1rem; align-items: flex-start; margin-bottom: 1.5rem;
+  }
+  .algo-step-num {
+    width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+    background: linear-gradient(135deg, #1565c0, #0d47a1);
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 0.8rem; font-weight: 700; margin-top: 2px;
+  }
+  .algo-step-title { font-size: 0.95rem; font-weight: 700; color: #1a1a2e; margin-bottom: 0.25rem; }
+  .algo-step-desc  { font-size: 0.85rem; color: #6b7280; line-height: 1.65; }
+  .algo-card {
+    background: linear-gradient(135deg, #1565c0, #0d47a1);
+    border-radius: 18px; padding: 2rem 2rem;
+    color: #fff; height: 100%;
+  }
+  .algo-card h5 { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; }
+  .algo-card p  { font-size: 0.85rem; color: rgba(255,255,255,0.78); line-height: 1.7; margin-bottom: 1.5rem; }
+  .algo-stat-row { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .algo-stat {
+    background: rgba(255,255,255,0.15); border-radius: 12px;
+    padding: 0.75rem 1rem; flex: 1; min-width: 80px; text-align: center;
+  }
+  .algo-stat .num { font-size: 1.4rem; font-weight: 700; }
+  .algo-stat .lbl { font-size: 0.68rem; color: rgba(255,255,255,0.7); margin-top: 2px; }
 
+  /* ── CTA banner ── */
+  .cta-section {
+    background: linear-gradient(135deg, #1565c0 0%, #0d47a1 100%);
+    padding: 4.5rem 0; text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .cta-section::before {
+    content: ''; position: absolute; left: -80px; top: -80px;
+    width: 300px; height: 300px; border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+  }
+  .cta-section h2 { color: #fff; font-size: 2rem; font-weight: 700; margin-bottom: 0.75rem; }
+  .cta-section p  { color: rgba(255,255,255,0.78); font-size: 0.97rem; margin-bottom: 2rem; }
+
+  /* ── Footer ── */
+  .site-footer {
+    background: #0d1b2e; color: rgba(255,255,255,0.7); padding: 4rem 0 2rem;
+  }
+  .footer-brand { color: #fff; font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem; }
+  .footer-brand i { margin-right: 6px; color: #90caf9; }
+  .footer-tagline { font-size: 0.83rem; color: rgba(255,255,255,0.5); margin-bottom: 1.5rem; }
+  .footer-heading {
+    color: #fff; font-size: 0.78rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 1rem;
+  }
+  .footer-links { list-style: none; padding: 0; margin: 0; }
+  .footer-links li { margin-bottom: 0.5rem; }
+  .footer-links a { color: rgba(255,255,255,0.55); font-size: 0.85rem; text-decoration: none; transition: color 0.15s; }
+  .footer-links a:hover { color: #fff; text-decoration: none; }
+  .footer-contact-item {
+    display: flex; align-items: flex-start; gap: 10px;
+    font-size: 0.83rem; color: rgba(255,255,255,0.55); margin-bottom: 0.65rem;
+  }
+  .footer-contact-item i { color: #90caf9; margin-top: 2px; flex-shrink: 0; }
+  .footer-divider { border-color: rgba(255,255,255,0.1); margin: 2.5rem 0 1.5rem; }
+  .footer-bottom {
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 0.75rem; font-size: 0.8rem; color: rgba(255,255,255,0.4);
+  }
+  .footer-social { display: flex; gap: 10px; }
+  .footer-social a {
+    width: 34px; height: 34px; border-radius: 8px;
+    background: rgba(255,255,255,0.08);
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(255,255,255,0.6); font-size: 0.85rem;
+    text-decoration: none; transition: background 0.15s, color 0.15s;
+  }
+  .footer-social a:hover { background: #1565c0; color: #fff; }
+
+  /* ── Responsive ── */
+  @media (max-width: 767px) {
+    .about-hero h1 { font-size: 2rem; }
+    .section-title { font-size: 1.55rem; }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- ════════════════════ HERO ════════════════════ -->
+<section class="about-hero">
   <div class="container">
+    <div class="about-hero-tag"><i class="fas fa-info-circle"></i> About TTGS</div>
+    <h1>Smart Scheduling for<br>Modern Institutions</h1>
+    <p>
+      TTGS was built to eliminate the hours of manual effort spent on timetable planning.
+      We combine a clean administrative interface with a powerful Genetic Algorithm engine
+      to deliver conflict-free schedules in seconds.
+    </p>
+    <div class="hero-actions">
+      <a href="{% url 'register' %}" class="btn-hero-white"><i class="fas fa-user-plus"></i> Get Started</a>
+      <a href="{% url 'contact' %}"  class="btn-hero-outline"><i class="fas fa-envelope"></i> Contact Us</a>
+    </div>
+  </div>
+</section>
 
+<!-- ════════════════════ MISSION ════════════════════ -->
+<section class="about-section">
+  <div class="container">
+    <div class="row align-items-center">
+
+      <div class="col-lg-5 mb-4 mb-lg-0">
+        <div class="section-tag">Our Mission</div>
+        <h2 class="section-title">Built to save institutions time and effort</h2>
+        <p class="section-sub">
+          Scheduling a timetable for an entire college or university is one of the most
+          complex administrative tasks — involving hundreds of constraints, rooms, teachers,
+          and time slots. TTGS makes it effortless.
+        </p>
+      </div>
+
+      <div class="col-lg-6 offset-lg-1">
+        <p class="mission-text">
+          TTGS started as a project to tackle a real-world problem faced by academic institutions:
+          the enormous time and effort required to build a workable timetable. Coordinators
+          and administrators would spend days manually arranging schedules, only to discover
+          conflicts that required starting over.
+        </p>
+        <div class="mission-highlight">
+          "Our goal is to give every educational institution — regardless of size — access to
+          intelligent, automated scheduling that just works."
+        </div>
+        <p class="mission-text">
+          Today, TTGS handles teachers, rooms, meeting times, courses, departments, and sections
+          through a straightforward dashboard. A single click triggers the genetic algorithm, and
+          within seconds, a fully optimised, conflict-free timetable is ready to download.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════ VALUES ════════════════════ -->
+<section class="about-section alt">
+  <div class="container">
+    <div class="text-center mb-5">
+      <div class="section-tag">What We Stand For</div>
+      <h2 class="section-title">Our core principles</h2>
+    </div>
     <div class="row">
-      <div class="col-md-4">
-        <h2>User</h2>
-          <p>Webmob provides User accounts which gives the user the privilege to create, manipulate or delete the organization's timetable.</p>
-        <p><a class="btn btn-secondary" href="{% url 'login' %}" role="button">Sign Up &raquo;</a></p>
+      <div class="col-sm-6 col-lg-3 mb-4">
+        <div class="value-card">
+          <div class="value-icon"><i class="fas fa-bolt"></i></div>
+          <div class="value-title">Speed</div>
+          <p class="value-desc">Generate complete, optimised timetables in seconds rather than days of manual work.</p>
+        </div>
       </div>
-      <div class="col-md-4">
-        <h2>How does it Work?</h2>
-          <p>Webmob makes use of a Genetic Algorithm that helps generate the most optimal and suited timetable for your organization's needs.</p>
-        <p><a class="btn btn-secondary" href="{% url 'login' %}" role="button">Generate Timetable &raquo;</a></p>
+      <div class="col-sm-6 col-lg-3 mb-4">
+        <div class="value-card">
+          <div class="value-icon"><i class="fas fa-shield-alt"></i></div>
+          <div class="value-title">Reliability</div>
+          <p class="value-desc">Every generated schedule is verified to be free of instructor and room conflicts before delivery.</p>
+        </div>
       </div>
-      <div class="col-md-4">
-        <h2>Terms & Conditions</h2>
-        <p>If your organization has any concerns regarding the system please click below to read our Terms and Conditions.</p>
-        <p><a class="btn btn-secondary" href="{% url 'terms' %}" role="button">Terms & Conditions &raquo;</a></p>
+      <div class="col-sm-6 col-lg-3 mb-4">
+        <div class="value-card">
+          <div class="value-icon"><i class="fas fa-hand-pointer"></i></div>
+          <div class="value-title">Simplicity</div>
+          <p class="value-desc">A clean, step-by-step interface means no technical expertise is needed to manage your timetable.</p>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3 mb-4">
+        <div class="value-card">
+          <div class="value-icon"><i class="fas fa-expand-arrows-alt"></i></div>
+          <div class="value-title">Scalability</div>
+          <p class="value-desc">Works equally well for small colleges and large multi-department universities with many sections.</p>
+        </div>
       </div>
     </div>
-
-    <hr>
-
   </div>
+</section>
 
-</main>
+<!-- ════════════════════ HOW IT WORKS ════════════════════ -->
+<section class="about-section">
+  <div class="container">
+    <div class="row align-items-center">
 
-<footer class="container">
-  <p>&copy; <a href="https://www.webmobinfo.ch/">webmobinfo.ch</a>. All Rights Reserved</p>
+      <!-- Steps -->
+      <div class="col-lg-6 mb-5 mb-lg-0">
+        <div class="section-tag">The Technology</div>
+        <h2 class="section-title">How the Genetic Algorithm works</h2>
+        <p style="font-size:0.9rem;color:#6b7280;line-height:1.75;margin-bottom:2rem;">
+          TTGS uses an evolutionary approach inspired by natural selection to find the
+          optimal schedule from a vast search space of possibilities.
+        </p>
+
+        <div class="algo-step">
+          <div class="algo-step-num">1</div>
+          <div>
+            <div class="algo-step-title">Initialise Population</div>
+            <p class="algo-step-desc">A set of random timetable schedules is created as the starting population, each representing a possible assignment of courses, rooms, instructors, and times.</p>
+          </div>
+        </div>
+
+        <div class="algo-step">
+          <div class="algo-step-num">2</div>
+          <div>
+            <div class="algo-step-title">Evaluate Fitness</div>
+            <p class="algo-step-desc">Each schedule is scored based on the number of conflicts — clashing rooms, double-booked instructors, or capacity violations. Fewer conflicts means higher fitness.</p>
+          </div>
+        </div>
+
+        <div class="algo-step">
+          <div class="algo-step-num">3</div>
+          <div>
+            <div class="algo-step-title">Selection &amp; Crossover</div>
+            <p class="algo-step-desc">The fittest schedules are selected via tournament selection and combined to produce new offspring schedules, inheriting the best traits from each parent.</p>
+          </div>
+        </div>
+
+        <div class="algo-step">
+          <div class="algo-step-num">4</div>
+          <div>
+            <div class="algo-step-title">Mutation &amp; Repeat</div>
+            <p class="algo-step-desc">Random mutations introduce variation to avoid local optima. The process repeats until a zero-conflict schedule is found or the generation limit is reached.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Algo stats card -->
+      <div class="col-lg-5 offset-lg-1">
+        <div class="algo-card">
+          <h5><i class="fas fa-dna mr-2"></i>Algorithm At a Glance</h5>
+          <p>Key parameters that drive TTGS's scheduling engine and ensure convergence toward a conflict-free solution.</p>
+          <div class="algo-stat-row mb-3">
+            <div class="algo-stat">
+              <div class="num">9</div>
+              <div class="lbl">Population Size</div>
+            </div>
+            <div class="algo-stat">
+              <div class="num">5%</div>
+              <div class="lbl">Mutation Rate</div>
+            </div>
+            <div class="algo-stat">
+              <div class="num">3</div>
+              <div class="lbl">Tournament Size</div>
+            </div>
+          </div>
+          <div style="border-top:1px solid rgba(255,255,255,0.15);padding-top:1.25rem;margin-top:0.5rem;">
+            <div style="font-size:0.8rem;color:rgba(255,255,255,0.65);margin-bottom:0.6rem;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;">Conflict Checks</div>
+            <div style="font-size:0.85rem;color:rgba(255,255,255,0.8);line-height:1.8;">
+              <i class="fas fa-check-circle mr-2" style="color:#86efac;"></i>Room capacity vs. class size<br>
+              <i class="fas fa-check-circle mr-2" style="color:#86efac;"></i>Instructor double-booking<br>
+              <i class="fas fa-check-circle mr-2" style="color:#86efac;"></i>Room double-booking<br>
+              <i class="fas fa-check-circle mr-2" style="color:#86efac;"></i>Section scheduling overlap
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════ ACCOUNT INFO ════════════════════ -->
+<section class="about-section alt">
+  <div class="container">
+    <div class="text-center mb-5">
+      <div class="section-tag">Getting Access</div>
+      <h2 class="section-title">Everything in one account</h2>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-md-4 mb-4">
+        <div class="value-card text-center">
+          <div class="value-icon mx-auto"><i class="fas fa-user-shield"></i></div>
+          <div class="value-title">Secure Admin Account</div>
+          <p class="value-desc">Register for a free account to access the full dashboard. Your data is protected with Django's authentication system.</p>
+          <a href="{% url 'register' %}" style="font-size:0.82rem;font-weight:700;color:#1565c0;text-decoration:none;">
+            Create Account <i class="fas fa-arrow-right ml-1"></i>
+          </a>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="value-card text-center">
+          <div class="value-icon mx-auto"><i class="fas fa-magic"></i></div>
+          <div class="value-title">One-Click Generation</div>
+          <p class="value-desc">Once your data is entered, generating a full conflict-free timetable takes a single click. The algorithm runs on the server — no setup required.</p>
+          <a href="{% url 'login' %}" style="font-size:0.82rem;font-weight:700;color:#1565c0;text-decoration:none;">
+            Log In <i class="fas fa-arrow-right ml-1"></i>
+          </a>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="value-card text-center">
+          <div class="value-icon mx-auto"><i class="fas fa-file-alt"></i></div>
+          <div class="value-title">Terms &amp; Conditions</div>
+          <p class="value-desc">Read our terms of service to understand the usage policy, data handling, and responsibilities when using TTGS.</p>
+          <a href="{% url 'terms' %}" style="font-size:0.82rem;font-weight:700;color:#1565c0;text-decoration:none;">
+            Read Terms <i class="fas fa-arrow-right ml-1"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════ CTA ════════════════════ -->
+<section class="cta-section">
+  <div class="container" style="position:relative;z-index:1;">
+    <h2>Ready to simplify your scheduling?</h2>
+    <p>Create a free account and generate your first conflict-free timetable today.</p>
+    <div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap;">
+      <a href="{% url 'register' %}" class="btn-hero-white"><i class="fas fa-user-plus"></i> Create Free Account</a>
+      <a href="{% url 'contact' %}"  class="btn-hero-outline"><i class="fas fa-envelope"></i> Get in Touch</a>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════ FOOTER ════════════════════ -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4 mb-4">
+        <div class="footer-brand"><i class="fas fa-graduation-cap"></i>TTGS</div>
+        <div class="footer-tagline">Timetable Generation System</div>
+        <p style="font-size:0.83rem;color:rgba(255,255,255,0.5);line-height:1.7;">
+          An intelligent, automated scheduling platform for colleges and universities powered by a genetic algorithm.
+        </p>
+      </div>
+      <div class="col-sm-4 col-lg-2 mb-4 offset-lg-1">
+        <div class="footer-heading">Navigation</div>
+        <ul class="footer-links">
+          <li><a href="{% url 'index' %}"><i class="fas fa-home mr-1"></i> Home</a></li>
+          <li><a href="{% url 'about' %}"><i class="fas fa-info-circle mr-1"></i> About Us</a></li>
+          <li><a href="{% url 'help' %}"><i class="fas fa-question-circle mr-1"></i> Help</a></li>
+          <li><a href="{% url 'contact' %}"><i class="fas fa-envelope mr-1"></i> Contact</a></li>
+        </ul>
+      </div>
+      <div class="col-sm-4 col-lg-2 mb-4">
+        <div class="footer-heading">Account</div>
+        <ul class="footer-links">
+          <li><a href="{% url 'login' %}"><i class="fas fa-sign-in-alt mr-1"></i> Log In</a></li>
+          <li><a href="{% url 'register' %}"><i class="fas fa-user-plus mr-1"></i> Register</a></li>
+        </ul>
+      </div>
+      <div class="col-sm-4 col-lg-3 mb-4">
+        <div class="footer-heading">Contact</div>
+        <div class="footer-contact-item"><i class="fas fa-envelope"></i> contactus@ttgs.com</div>
+        <div class="footer-contact-item"><i class="fas fa-phone"></i> +91 9823451278</div>
+        <div class="footer-contact-item"><i class="fas fa-map-marker-alt"></i> 1901/B, Om Vikas,<br>Mumbai, Maharashtra 400006</div>
+      </div>
+    </div>
+    <hr class="footer-divider">
+    <div class="footer-bottom">
+      <span>&copy; 2026 TTGS. All rights reserved.</span>
+      <div class="footer-social">
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-youtube"></i></a>
+      </div>
+    </div>
+  </div>
 </footer>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-      <script>window.jQuery || document.write('<script src="../assets/js/vendor/jquery.slim.min.js"><\/script>')</script><script src="../assets/dist/js/bootstrap.bundle.js"></script>
 
-    </form>
-</body>
-</html>
+{% endblock %}

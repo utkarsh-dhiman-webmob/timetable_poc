@@ -1,218 +1,227 @@
+{% extends "base_dashboard.html" %}
 {% load static %}
-<html lang="en">
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>TTGS | Generate Timetable</title>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-	<script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
-    <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/carousel/">
-    <script src="render.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
-    <script type="text/javascript" language="JavaScript">
-    window.onload = function () {
-    document.getElementById("download")
-        .addEventListener("click", () => {
-            const invoice = this.document.getElementById("timetable");
-            console.log(invoice);
-            console.log(window);
-            var opt = {
-                margin: 1,
-                filename: 'Timetable.pdf',
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2 },
-                jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape' }
-            };
-            html2pdf().from(invoice).set(opt).save();
-        })
-}</script>
-    <style>
 
-      *{
-	margin: 0;
-	padding: 0;
-	box-sizing: border-box;
+{% block title %}TTGS | Generated Timetable{% endblock %}
+{% block nav_generate %}active{% endblock %}
 
-}
+{% block extra_head %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
+<style>
+  .tt-wrapper { padding: 2rem; }
 
-html{
-	scroll-behavior: smooth;
-}
+  /* ── Page header ── */
+  .tt-page-header {
+    background: linear-gradient(135deg, #1565c0 0%, #0d47a1 100%);
+    border-radius: 16px;
+    padding: 1.75rem 2.25rem;
+    margin-bottom: 1.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .tt-page-header::before {
+    content: '';
+    position: absolute; right: -40px; top: -50px;
+    width: 200px; height: 200px; border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+  }
+  .tt-page-header::after {
+    content: '';
+    position: absolute; right: 60px; bottom: -70px;
+    width: 150px; height: 150px; border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+  }
+  .tt-header-left { position: relative; z-index: 1; }
+  .tt-header-left h4 {
+    color: #fff; font-size: 1.3rem; font-weight: 700;
+    margin: 0 0 0.3rem;
+  }
+  .tt-header-meta {
+    display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap;
+  }
+  .tt-meta-chip {
+    background: rgba(255,255,255,0.15);
+    border-radius: 20px; padding: 0.25rem 0.85rem;
+    font-size: 0.78rem; color: rgba(255,255,255,0.9); font-weight: 600;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .tt-meta-chip.success { background: rgba(34,197,94,0.25); }
+  .tt-meta-chip.warn    { background: rgba(251,191,36,0.25); }
 
-a{
-	text-decoration:none;
-}
-
-h1, h2, h3, h4, h5{
-    text-align: center;
-    font-family: times new roman;
-}
-
-button
-{
-	border-style:none;
-}
-.main
-{
-	max-width: 1200px;
-	height: auto;
-	margin:0 auto;
-}
-
-form {
-	margin-top: 3%;
-	margin-left: 18%;
-	margin-right: 12%;
-}
-
-form fieldset{
-	padding: 50px;
-	border-width: 25px;
-	border-style: ridge;
-	border-color: #257a7a;
-	box-shadow: 6px 13px 13px 0px black;
-	background-color: #fff;
-
-}
-
-.secHead{
-	margin-top: 20px;
-	margin-bottom: 20px;
-	margin-left: 120px;
-	color:#3e4242;
-	font-size: 1.8rem;
-}
-
-.table2{
-    margin-bottom: 100px;
-	margin-left: auto;
-	margin-right: auto;
-}
-
-.table2 {
-
-  border: 25px ridge;
-  border-color: #5a5a5a;
-  box-shadow: 6px 13px 13px 0px black;
-  background-color: #fff;
-  letter-spacing: 1px;
-  font-size: 1.0rem;
-}
-
-.table2 td, th {
-  border: 1px solid rgb(190,190,190);
-  padding: 10px 20px;
-
-}
-
-.table2 th{
-	color: #5a5a5a;
-	font-weight: bolder;
-}
-
-.table2 td {
-  text-align: center;
-}
-
-.table1{
-  width: 100%;
-  border-collapse: collapse;
-  text-align: left;
-  overflow: hidden;
-}
-
-.table1 td, th{
-    border-top: 1px solid #5a5a5a;
-    padding: 10px;
+  .btn-tt-download {
+    position: relative; z-index: 1;
+    background: #fff; color: #1565c0;
+    border: none; border-radius: 10px;
+    padding: 0.65rem 1.5rem;
+    font-weight: 700; font-size: 0.88rem;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.18);
+    display: inline-flex; align-items: center; gap: 8px;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    white-space: nowrap;
+  }
+  .btn-tt-download:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 7px 20px rgba(0,0,0,0.22);
   }
 
+  /* ── Section cards ── */
+  .tt-section { margin-bottom: 1.5rem; }
 
-.table1 th{
-    background-color: #5a5a5a;
-    color: #fff;
+  .tt-section-header {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 0.65rem;
+  }
+  .tt-section-icon {
+    width: 38px; height: 38px; border-radius: 10px;
+    background: linear-gradient(135deg, #1565c0, #0d47a1);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .tt-section-icon i { color: #fff; font-size: 0.9rem; }
+  .tt-section-title {
+    font-size: 1rem; font-weight: 700; color: #1a1a2e;
+  }
+  .tt-section-dept {
+    font-size: 0.78rem; color: #6b7280; margin-top: 1px;
   }
 
-.submit{
-	margin-left: auto;
-	color: #fff;
-	background-color: #5a5a5a;
-	border-radius: 3px;
-	padding: 13px 39px;
-	text-align: center;
-	letter-spacing: 0.9px;
-	text-decoration: none;
-	margin-right: auto;
-	line-height: 26px;
-	font-size: 16px;
-	align: center;
-}
-    </style>
+  /* Reuse .list-table from base for consistent styling */
+  .tt-section .list-table { margin-bottom: 0; }
+  .tt-section .list-card  { margin-bottom: 0; }
 
-</head>
-<body>
-<script type="text/javascript">
-        var checkList = document.getElementById('list1');
-        var items = document.getElementById('items');
-        checkList.getElementsByClassName('anchor')[0].onclick = function (evt) {
-            if (items.classList.contains('visible')){
-                items.classList.remove('visible');
-                items.style.display = "none";
-            }
-
-            else{
-                items.classList.add('visible');
-                items.style.display = "block";
-            }
-        }
-
-        items.onblur = function(evt) {
-            items.classList.remove('visible');
-        }
-
-    </script>
-        <br><br>
-        <div id="timetable">
-        <h1>TTGS | Generated Timetable</h1><br>
-        {% block content %}
-        {% load static %}
-        {% for section in sections %}
-<h2 class="secHead">{{ section.section_id }} ({{ section.department }})</h2>
-    <table class="table2">
-      <colgroup>
-        <col>
-        <col>
-        <col>
-        <col>
-        <col>
-        <col>
-      </colgroup>
-      <tr>
-        <th>Class #</th>
-        <th>Course</th>
-        <th>Venue(Block- Room)</th>
-        <th>Instructor</th>
-        <th>Class Timing</th>
-      </tr>
-      {% for class in schedule %}
-        {% if class.section == section.section_id %}
-        <tr>
-          <th>{{class.section_id}}</th>
-          <td>{{class.course}}</td>
-          <td>{{class.room}}</td>
-          <td>{{class.instructor}}</td>
-          <td>{{class.meeting_time}}</td>
-        </tr>
-        {% endif %}
-      {% endfor %}
-    </table>
-
-{% endfor %}
+  /* ── Empty state ── */
+  .tt-empty {
+    text-align: center; padding: 3rem 2rem; color: #9ca3af;
+  }
+  .tt-empty i { font-size: 2.5rem; margin-bottom: 1rem; display: block; }
+  .tt-empty p { font-size: 0.9rem; }
+</style>
 {% endblock %}
 
+{% block content %}
+<div class="tt-wrapper">
+
+  <!-- ── Page Header ── -->
+  <div class="tt-page-header">
+    <div class="tt-header-left">
+      <h4><i class="fas fa-calendar-check mr-2"></i>Generated Timetable</h4>
+      <div class="tt-header-meta">
+        <span class="tt-meta-chip">
+          <i class="fas fa-layer-group"></i>
+          {{ sections|length }} Section{{ sections|length|pluralize }}
+        </span>
+        <span class="tt-meta-chip">
+          <i class="fas fa-dna"></i>
+          {{ generation_num }} Generation{{ generation_num|pluralize }}
+        </span>
+        {% if fitness == 1.0 %}
+        <span class="tt-meta-chip success">
+          <i class="fas fa-check-circle"></i>
+          No conflicts
+        </span>
+        {% else %}
+        <span class="tt-meta-chip warn">
+          <i class="fas fa-exclamation-triangle"></i>
+          Best solution found
+        </span>
+        {% endif %}
+      </div>
+    </div>
+    <button class="btn-tt-download" id="downloadBtn">
+      <i class="fas fa-file-pdf"></i> Download PDF
+    </button>
+  </div>
+
+  <!-- ── Timetable Content ── -->
+  <div id="timetable-content">
+    {% for section in sections %}
+    <div class="tt-section">
+      <!-- Section heading -->
+      <div class="tt-section-header">
+        <div class="tt-section-icon"><i class="fas fa-layer-group"></i></div>
+        <div>
+          <div class="tt-section-title">{{ section.section_id }}</div>
+          <div class="tt-section-dept"><i class="fas fa-building mr-1"></i>{{ section.department }}</div>
         </div>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button class="submit" id="download">Download</button>
-</body>
-</html>
+      </div>
+
+      <!-- Section table -->
+      <div class="list-card" style="margin-bottom:0;">
+        <table class="list-table">
+          <thead>
+            <tr>
+              <th style="width:70px;">#</th>
+              <th>Course</th>
+              <th>Room</th>
+              <th>Instructor</th>
+              <th>Day &amp; Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for class in schedule %}
+            {% if class.section == section.section_id %}
+            <tr>
+              <td><span class="uid-badge">{{ class.section_id }}</span></td>
+              <td><span class="item-name">{{ class.course }}</span></td>
+              <td>
+                <div class="d-flex align-items-center">
+                  <i class="fas fa-door-open mr-2" style="color:#1565c0;font-size:0.82rem;"></i>
+                  {{ class.room }}
+                </div>
+              </td>
+              <td>
+                <div class="d-flex align-items-center">
+                  <div class="item-avatar" style="width:28px;height:28px;font-size:0.6rem;border-radius:8px;">
+                    {{ class.instructor.name|slice:":2"|upper }}
+                  </div>
+                  <span style="font-size:0.88rem;color:#374151;">{{ class.instructor }}</span>
+                </div>
+              </td>
+              <td>
+                <span style="font-size:0.85rem;color:#374151;">
+                  <i class="fas fa-calendar-day mr-1" style="color:#1565c0;font-size:0.78rem;"></i>
+                  {{ class.meeting_time.day }}
+                  &nbsp;
+                  <i class="fas fa-clock ml-1 mr-1" style="color:#1565c0;font-size:0.78rem;"></i>
+                  {{ class.meeting_time.time }}
+                </span>
+              </td>
+            </tr>
+            {% endif %}
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    {% empty %}
+    <div class="list-card">
+      <div class="tt-empty">
+        <i class="fas fa-calendar-times" style="color:#d1d5db;"></i>
+        <p>No sections found. Please add sections before generating a timetable.</p>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+</div>
+
+<script>
+window.addEventListener('DOMContentLoaded', function () {
+  document.getElementById('downloadBtn').addEventListener('click', function () {
+    var element = document.getElementById('timetable-content');
+    var opt = {
+      margin: 0.5,
+      filename: 'Timetable.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape' }
+    };
+    html2pdf().from(element).set(opt).save();
+  });
+});
+</script>
+{% endblock %}

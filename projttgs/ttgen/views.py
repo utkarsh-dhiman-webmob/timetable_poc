@@ -59,27 +59,33 @@ class Schedule:
         for section in sections:
             dept = section.department
             n = section.num_class_in_week
-            if n <= len(MeetingTime.objects.all()):
+            meeting_times = MeetingTime.objects.all()
+            rooms = data.get_rooms()
+            if n <= len(meeting_times):
                 courses = dept.courses.all()
                 for course in courses:
+                    crs_inst = course.instructors.all()
+                    if not crs_inst or not rooms or not meeting_times:
+                        continue
                     for i in range(n // len(courses)):
-                        crs_inst = course.instructors.all()
                         newClass = Class(self._classNumb, dept, section.section_id, course)
                         self._classNumb += 1
-                        newClass.set_meetingTime(data.get_meetingTimes()[rnd.randrange(0, len(MeetingTime.objects.all()))])
-                        newClass.set_room(data.get_rooms()[rnd.randrange(0, len(data.get_rooms()))])
+                        newClass.set_meetingTime(meeting_times[rnd.randrange(0, len(meeting_times))])
+                        newClass.set_room(rooms[rnd.randrange(0, len(rooms))])
                         newClass.set_instructor(crs_inst[rnd.randrange(0, len(crs_inst))])
                         self._classes.append(newClass)
             else:
-                n = len(MeetingTime.objects.all())
+                n = len(meeting_times)
                 courses = dept.courses.all()
                 for course in courses:
+                    crs_inst = course.instructors.all()
+                    if not crs_inst or not rooms or not meeting_times:
+                        continue
                     for i in range(n // len(courses)):
-                        crs_inst = course.instructors.all()
                         newClass = Class(self._classNumb, dept, section.section_id, course)
                         self._classNumb += 1
-                        newClass.set_meetingTime(data.get_meetingTimes()[rnd.randrange(0, len(MeetingTime.objects.all()))])
-                        newClass.set_room(data.get_rooms()[rnd.randrange(0, len(data.get_rooms()))])
+                        newClass.set_meetingTime(meeting_times[rnd.randrange(0, len(meeting_times))])
+                        newClass.set_room(rooms[rnd.randrange(0, len(rooms))])
                         newClass.set_instructor(crs_inst[rnd.randrange(0, len(crs_inst))])
                         self._classes.append(newClass)
 
@@ -207,21 +213,27 @@ def context_manager(schedule):
     return context
 
 
+MAX_GENERATIONS = 1000
+
+
 def timetable(request):
-    schedule = []
     population = Population(POPULATION_SIZE)
     generation_num = 0
     population.get_schedules().sort(key=lambda x: x.get_fitness(), reverse=True)
     geneticAlgorithm = GeneticAlgorithm()
-    while population.get_schedules()[0].get_fitness() != 1.0:
+    while population.get_schedules()[0].get_fitness() != 1.0 and generation_num < MAX_GENERATIONS:
         generation_num += 1
-        print('\n> Generation #' + str(generation_num))
         population = geneticAlgorithm.evolve(population)
         population.get_schedules().sort(key=lambda x: x.get_fitness(), reverse=True)
-        schedule = population.get_schedules()[0].get_classes()
+    schedule = population.get_schedules()[0].get_classes()
 
-    return render(request, 'gentimetable.html', {'schedule': schedule, 'sections': Section.objects.all(),
-                                              'times': MeetingTime.objects.all()})
+    return render(request, 'gentimetable.html', {
+        'schedule': schedule,
+        'sections': Section.objects.all(),
+        'times': MeetingTime.objects.all(),
+        'generation_num': generation_num,
+        'fitness': population.get_schedules()[0].get_fitness(),
+    })
 
 ############################################################################
 
@@ -257,7 +269,15 @@ def contact(request):
 
 @login_required
 def admindash(request):
-    return render(request, 'admindashboard.html', {})
+    context = {
+        'teacher_count': Instructor.objects.count(),
+        'room_count': Room.objects.count(),
+        'timing_count': MeetingTime.objects.count(),
+        'course_count': Course.objects.count(),
+        'dept_count': Department.objects.count(),
+        'section_count': Section.objects.count(),
+    }
+    return render(request, 'admindashboard.html', context)
 
 #################################################################################
 
@@ -267,7 +287,7 @@ def addCourses(request):
     if request.method == 'POST':
         if form.is_valid():
             form.save()
-            return redirect('addCourses')
+            return redirect('editcourse')
         else:
             print('Invalid')
     context = {
@@ -278,7 +298,8 @@ def addCourses(request):
 @login_required
 def course_list_view(request):
     context = {
-        'courses': Course.objects.all()
+        'courses': Course.objects.all(),
+        'form': CourseForm(),
     }
     return render(request, 'courseslist.html', context)
 
@@ -297,7 +318,7 @@ def addInstructor(request):
     if request.method == 'POST':
         if form.is_valid():
             form.save()
-            return redirect('addInstructors')
+            return redirect('editinstructor')
     context = {
         'form': form
     }
@@ -306,7 +327,8 @@ def addInstructor(request):
 @login_required
 def inst_list_view(request):
     context = {
-        'instructors': Instructor.objects.all()
+        'instructors': Instructor.objects.all(),
+        'form': InstructorForm(),
     }
     return render(request, 'inslist.html', context)
 
@@ -325,7 +347,7 @@ def addRooms(request):
     if request.method == 'POST':
         if form.is_valid():
             form.save()
-            return redirect('addRooms')
+            return redirect('editrooms')
     context = {
         'form': form
     }
@@ -334,7 +356,8 @@ def addRooms(request):
 @login_required
 def room_list(request):
     context = {
-        'rooms': Room.objects.all()
+        'rooms': Room.objects.all(),
+        'form': RoomForm(),
     }
     return render(request, 'roomslist.html', context)
 
@@ -353,7 +376,7 @@ def addTimings(request):
     if request.method == 'POST':
         if form.is_valid():
             form.save()
-            return redirect('addTimings')
+            return redirect('editmeetingtime')
         else:
             print('Invalid')
     context = {
@@ -364,7 +387,8 @@ def addTimings(request):
 @login_required
 def meeting_list_view(request):
     context = {
-        'meeting_times': MeetingTime.objects.all()
+        'meeting_times': MeetingTime.objects.all(),
+        'form': MeetingTimeForm(),
     }
     return render(request, 'mtlist.html', context)
 
@@ -383,7 +407,7 @@ def addDepts(request):
     if request.method == 'POST':
         if form.is_valid():
             form.save()
-            return redirect('addDepts')
+            return redirect('editdepartment')
     context = {
         'form': form
     }
@@ -392,7 +416,8 @@ def addDepts(request):
 @login_required
 def department_list(request):
     context = {
-        'departments': Department.objects.all()
+        'departments': Department.objects.all(),
+        'form': DepartmentForm(),
     }
     return render(request, 'deptlist.html', context)
 
@@ -411,7 +436,7 @@ def addSections(request):
     if request.method == 'POST':
         if form.is_valid():
             form.save()
-            return redirect('addSections')
+            return redirect('editsection')
     context = {
         'form': form
     }
@@ -420,7 +445,8 @@ def addSections(request):
 @login_required
 def section_list(request):
     context = {
-        'sections': Section.objects.all()
+        'sections': Section.objects.all(),
+        'form': SectionForm(),
     }
     return render(request, 'seclist.html', context)
 
@@ -435,7 +461,15 @@ def delete_section(request, pk):
 
 @login_required
 def generate(request):
-    return render(request, 'generate.html', {})
+    context = {
+        'teacher_count': Instructor.objects.count(),
+        'room_count': Room.objects.count(),
+        'timing_count': MeetingTime.objects.count(),
+        'course_count': Course.objects.count(),
+        'dept_count': Department.objects.count(),
+        'section_count': Section.objects.count(),
+    }
+    return render(request, 'generate.html', context)
 
 #################################################################################
 

@@ -1,0 +1,321 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}TTGS | Dashboard{% endblock %}</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  {% block extra_head %}{% endblock %}
+  <style>
+    body { padding-top: 56px; font-family: 'Poppins', sans-serif; }
+
+    /* ---- Blue Navbar ---- */
+    .ttgs-nav {
+      background: linear-gradient(135deg, #1565c0 0%, #0d47a1 100%);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+    .ttgs-nav .navbar-brand {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: #fff !important;
+    }
+    .ttgs-nav .navbar-brand i { margin-right: 6px; }
+    .ttgs-nav .nav-link {
+      color: rgba(255,255,255,0.85) !important;
+      font-weight: 500;
+      font-size: 0.82rem;
+      padding: 0.4rem 0.6rem !important;
+      border-radius: 0.3rem;
+      transition: all 0.2s;
+    }
+    .ttgs-nav .nav-link:hover {
+      color: #fff !important;
+      background: rgba(255,255,255,0.15);
+    }
+    .ttgs-nav .nav-item.active .nav-link {
+      color: #fff !important;
+      background: rgba(255,255,255,0.2);
+    }
+    .ttgs-nav .navbar-toggler { border-color: rgba(255,255,255,0.4); }
+    .ttgs-nav .navbar-toggler-icon {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255,255,255,0.9)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    }
+    .ttgs-nav .nav-separator {
+      color: rgba(255,255,255,0.3) !important;
+      cursor: default;
+      padding: 0 2px !important;
+    }
+    .ttgs-nav .dropdown-menu {
+      border: none;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+      border-radius: 0.5rem;
+      min-width: 180px;
+    }
+    .ttgs-nav .dropdown-item {
+      font-size: 0.85rem;
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+    }
+    .ttgs-nav .dropdown-item:hover { background: #e8f0fe; color: #1a73e8; }
+    .ttgs-nav .dropdown-item.text-danger:hover { background: #fff0f0; }
+
+    /* ---- Shared Dashboard Styles ---- */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    a { text-decoration: none; }
+    button { border-style: none; }
+    h1, h2, h3, h4, h5 { text-align: center; }
+
+    form {
+      margin-top: 3%;
+      margin-left: 18%;
+      margin-right: 12%;
+    }
+    form fieldset {
+      padding: 50px;
+      border-width: 25px;
+      border-style: ridge;
+      border-color: #5a5a5a;
+      box-shadow: 6px 13px 13px 0px black;
+      background-color: #fff;
+    }
+    fieldset legend { font-size: 20px; }
+    fieldset h1 {
+      color: #5a5a5a;
+      padding-bottom: 20px;
+      margin-left: 35px;
+      display: inline-block;
+      cursor: pointer;
+      font-size: 28px;
+    }
+    fieldset label {
+      margin-left: 40px;
+      padding: 23px;
+      font-size: 20px;
+      display: inline-block;
+      width: 220px;
+    }
+    fieldset input { padding: 8px; color: #938c8c; }
+    fieldset input:focus { color: #000; }
+    fieldset button {
+      margin-left: 60px;
+      color: #fff;
+      background-color: #5a5a5a;
+      border-radius: 3px;
+      padding: 13px 39px;
+      text-align: center;
+      letter-spacing: 0.9px;
+      text-decoration: none;
+      margin-right: 10px;
+      line-height: 26px;
+      font-size: 16px;
+      box-shadow: 0px 1px 3px 0px #9e9292;
+      margin-top: 15px;
+    }
+    .dropdown-check-list { display: inline-block; }
+    .dropdown-check-list .anchor {
+      position: relative;
+      cursor: pointer;
+      display: inline-block;
+      padding: 5px 50px 5px 10px;
+      border: 1px solid #ccc;
+    }
+    .dropdown-check-list .anchor:after {
+      position: absolute;
+      content: "";
+      border-left: 2px solid black;
+      border-top: 2px solid black;
+      padding: 5px;
+      right: 10px;
+      top: 20%;
+      transform: rotate(-135deg);
+    }
+    .dropdown-check-list ul.items {
+      padding: 2px;
+      display: none;
+      margin: 0;
+      border: 1px solid #ccc;
+      border-top: none;
+    }
+    .dropdown-check-list ul.items li { list-style: none; }
+
+    .secHead {
+      margin-top: 20px;
+      margin-bottom: 20px;
+      margin-left: 120px;
+      color: #5a5a5a;
+      font-size: 1.8rem;
+    }
+    .submit {
+      margin-left: 60px;
+      color: #fff;
+      background-color: #5a5a5a;
+      border-radius: 3px;
+      padding: 13px 39px;
+      text-align: center;
+      letter-spacing: 0.9px;
+      text-decoration: none;
+      margin-right: 10px;
+      line-height: 26px;
+      font-size: 16px;
+      box-shadow: 0px 1px 3px 0px #5a5a5a;
+      margin-top: 15px;
+    }
+    .table2 {
+      margin-bottom: 100px;
+      margin-left: 120px;
+      border: 25px ridge;
+      border-color: #5a5a5a;
+      box-shadow: 6px 13px 13px 0px black;
+      background-color: #fff;
+      letter-spacing: 1px;
+      font-size: 1.0rem;
+    }
+    .table2 td, .table2 th { border: 1px solid rgb(190,190,190); padding: 10px 20px; }
+    .table2 th { color: #5a5a5a; font-weight: bolder; }
+    .table2 td { text-align: center; }
+    .table1 { width: 100%; border-collapse: collapse; text-align: left; overflow: hidden; }
+    .table1 td, .table1 th { border-top: 1px solid #5a5a5a; padding: 10px; }
+    .table1 th { background-color: #5a5a5a; color: #fff; }
+    .cross {
+      font-size: 10px;
+      box-shadow: 0px 1px 3px 0px #9e9292;
+      padding: 4px 5px;
+      color: #fff;
+      background-color: #5a5a5a;
+      cursor: pointer;
+    }
+    #link_to_edit { padding-left: 45px; }
+    .fieldset {
+      margin-top: 3%;
+      margin-left: 18%;
+      margin-right: 12%;
+      padding: 50px;
+      border-width: 25px;
+      border-style: ridge;
+      border-color: #5a5a5a;
+      box-shadow: 6px 13px 13px 0px black;
+      background-color: #fff;
+    }
+    .container { padding-bottom: 100px; }
+
+    /* ---- List Card & Table (shared) ---- */
+    .list-card { background:#fff;border-radius:14px;box-shadow:0 4px 24px rgba(21,101,192,0.08);margin:2rem;overflow:hidden; }
+    .list-card-header { padding:1.35rem 1.75rem;border-bottom:1px solid #f0f4ff;display:flex;align-items:center;justify-content:space-between; }
+    .list-card-header .title-wrap { display:flex;align-items:center;gap:12px; }
+    .list-icon-box { width:42px;height:42px;background:linear-gradient(135deg,#1565c0,#0d47a1);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0; }
+    .list-icon-box i { color:#fff;font-size:1.1rem; }
+    .list-card-title { margin:0;font-weight:700;color:#1a1a2e;font-size:1.05rem;text-align:left; }
+    .list-card-subtitle { color:#9ca3af;font-size:0.78rem; }
+    .count-badge { background:#e8f0fe;color:#1565c0;font-size:0.75rem;font-weight:600;padding:2px 10px;border-radius:20px; }
+    .btn-add-item { background:linear-gradient(135deg,#1565c0,#0d47a1);color:#fff !important;border:none;border-radius:8px;padding:0.45rem 1.1rem;font-weight:600;font-size:0.88rem;box-shadow:0 4px 12px rgba(21,101,192,0.3);transition:box-shadow 0.2s;cursor:pointer; }
+    .btn-add-item:hover { box-shadow:0 6px 18px rgba(21,101,192,0.45); }
+    .list-table { width:100%;border-collapse:collapse; }
+    .list-table thead th { background:#f8f9fe;color:#6b7280;font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;padding:0.85rem 1.25rem;border-bottom:1px solid #eef0f8;text-align:left; }
+    .list-table tbody tr { border-bottom:1px solid #f3f4f8;transition:background 0.15s; }
+    .list-table tbody tr:last-child { border-bottom:none; }
+    .list-table tbody tr:hover { background:#f5f8ff; }
+    .list-table td { padding:0.9rem 1.25rem;vertical-align:middle; }
+    .item-avatar { width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#1565c0,#42a5f5);color:#fff;font-size:0.8rem;font-weight:700;display:inline-flex;align-items:center;justify-content:center;margin-right:10px;flex-shrink:0; }
+    .item-name { font-weight:600;color:#1a1a2e;font-size:0.95rem; }
+    .uid-badge { background:#e8f0fe;color:#1565c0;font-size:0.78rem;font-weight:700;padding:3px 10px;border-radius:6px;font-family:monospace;letter-spacing:0.03em; }
+    .btn-delete-item { background:#fff0f0;border:1px solid #fecaca;color:#dc2626;border-radius:7px;padding:5px 10px;font-size:0.8rem;cursor:pointer;transition:background 0.15s,color 0.15s; }
+    .btn-delete-item:hover { background:#dc2626;color:#fff;border-color:#dc2626; }
+    .empty-state { padding:3.5rem 1rem;text-align:center;color:#9ca3af; }
+    .empty-state .empty-icon { font-size:2.5rem;margin-bottom:0.75rem;color:#d1d9f0;display:block; }
+    .empty-state p { margin:0;font-size:0.95rem; }
+    /* ---- Shared Modal ---- */
+    .list-modal form { margin:0; }
+    .list-modal .modal-content { border:none;border-radius:12px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.2); }
+    .list-modal .modal-header { background:linear-gradient(135deg,#1565c0 0%,#0d47a1 100%);border:none;padding:1.5rem 1.75rem; }
+    .list-modal .modal-icon-wrap { width:40px;height:40px;background:rgba(255,255,255,0.2);border-radius:10px;display:flex;align-items:center;justify-content:center;margin-right:12px;flex-shrink:0; }
+    .list-modal .modal-icon-wrap i { color:#fff;font-size:1.1rem; }
+    .list-modal .modal-title { color:#fff;font-weight:600;font-size:1.1rem;margin:0;text-align:left; }
+    .list-modal .modal-subtitle { color:rgba(255,255,255,0.75);font-size:0.82rem; }
+    .list-modal .close { color:#fff;opacity:0.8;font-size:1.4rem;padding:0;margin:0; }
+    .list-modal .modal-body { padding:1.75rem; }
+    .list-modal .field-label { font-size:0.8rem;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;display:block; }
+    .list-modal .field-hint { color:#9ca3af;font-size:0.78rem;margin-top:4px;display:block; }
+    .list-modal .input-group-text { background:#f0f4ff;border:1.5px solid #d1d9f0;border-right:none;color:#1565c0;border-radius:8px 0 0 8px; }
+    .list-modal .form-control { border:1.5px solid #d1d9f0;border-left:none;border-radius:0 8px 8px 0;font-size:0.95rem;color:#1a1a2e; }
+    .list-modal .form-control:focus { border-color:#1565c0;box-shadow:none; }
+    .list-modal .input-group select { border:1.5px solid #d1d9f0;border-left:none;border-radius:0 8px 8px 0;font-size:0.95rem;color:#1a1a2e;padding:0.55rem 0.85rem;flex:1;min-width:0;height:auto; }
+    .list-modal .input-group select:focus { border-color:#1565c0;outline:none;box-shadow:none; }
+    .list-modal select[multiple] { border:1.5px solid #d1d9f0;border-radius:8px;font-size:0.9rem;color:#1a1a2e;padding:0.5rem;width:100%;min-height:110px; }
+    .list-modal select[multiple]:focus { border-color:#1565c0;outline:none; }
+    .list-modal .modal-footer { border-top:1px solid #f0f0f0;padding:1rem 1.75rem; }
+    .btn-modal-cancel { border-radius:8px;font-weight:500;padding:0.5rem 1.25rem;color:#6b7280; }
+    .btn-modal-submit { border-radius:8px;font-weight:600;padding:0.5rem 1.5rem;background:linear-gradient(135deg,#1565c0,#0d47a1);border:none;box-shadow:0 4px 12px rgba(21,101,192,0.35);color:#fff; }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar navbar-expand-lg ttgs-nav fixed-top">
+    <a class="navbar-brand" href="{% url 'admindash' %}">
+      <i class="fas fa-graduation-cap"></i>TTGS
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarDash"
+            aria-controls="navbarDash" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarDash">
+      <ul class="navbar-nav ml-auto align-items-center">
+        <li class="nav-item {% block nav_admindash %}{% endblock %}">
+          <a class="nav-link" href="{% url 'admindash' %}">Get Started</a>
+        </li>
+        <li class="nav-item {% block nav_teachers %}{% endblock %}">
+          <a class="nav-link" href="{% url 'editinstructor' %}">Teachers</a>
+        </li>
+        <li class="nav-item {% block nav_rooms %}{% endblock %}">
+          <a class="nav-link" href="{% url 'editrooms' %}">Rooms</a>
+        </li>
+        <li class="nav-item {% block nav_timings %}{% endblock %}">
+          <a class="nav-link" href="{% url 'editmeetingtime' %}">Timings</a>
+        </li>
+        <li class="nav-item {% block nav_courses %}{% endblock %}">
+          <a class="nav-link" href="{% url 'editcourse' %}">Courses</a>
+        </li>
+        <li class="nav-item {% block nav_depts %}{% endblock %}">
+          <a class="nav-link" href="{% url 'editdepartment' %}">Departments</a>
+        </li>
+        <li class="nav-item {% block nav_sections %}{% endblock %}">
+          <a class="nav-link" href="{% url 'editsection' %}">Sections</a>
+        </li>
+        <li class="nav-item {% block nav_generate %}{% endblock %}">
+          <a class="nav-link" href="{% url 'generate' %}">Generate Timetable</a>
+        </li>
+        <li class="nav-item">
+          <span class="nav-link nav-separator">|</span>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="userDropdown" data-toggle="dropdown"
+             aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-user-circle mr-1"></i>{{ user.first_name|default:user.username }}
+          </a>
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+            <a class="dropdown-item" href="{% url 'password_change' %}">
+              <i class="fas fa-key mr-2 text-muted"></i>Change Password
+            </a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item text-danger" href="{% url 'logout' %}">
+              <i class="fas fa-sign-out-alt mr-2"></i>Logout
+            </a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  {% block content %}{% endblock %}
+
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

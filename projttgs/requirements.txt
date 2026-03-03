@@ -1,0 +1,11 @@
+setuptools
+django==4.2.9
+Pillow==10.2.0
+WeasyPrint==60.2
+django-crispy-forms==2.1
+crispy-bootstrap4==2023.1
+xhtml2pdf==0.2.8
+reportlab==3.6.13
+requests==2.31.0
+pytz==2024.1
+numpy==1.26.4

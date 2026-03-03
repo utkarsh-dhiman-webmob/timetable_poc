@@ -25,8 +25,7 @@ SECRET_KEY = '!^pl^(esc16%iofqa$k!2)!h_c*uedsi66(9ucvz1k-y=2ltk5'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# ALLOWED_HOSTS = ["0.0.0.0", "localhost", "127.0.0.1"]
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "localhost,127.0.0.1,0.0.0.0").split(",")
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -125,6 +124,8 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static/'),
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'assets')
+
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 

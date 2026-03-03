@@ -1,385 +1,445 @@
-<!DOCTYPE html>
+{% extends "base_public.html" %}
+{% load static %}
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <title>WebMob | Contact Us</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-	<script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
-    <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/carousel/" />
-    <link rel="stylesheet" type="text/css" href="static/css/contact.css"/>
+{% block title %}TTGS | Contact Us{% endblock %}
+{% block nav_contact %}active{% endblock %}
 
-    <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap');
+{% block extra_head %}
+<style>
+  /* ── Page hero ── */
+  .contact-hero {
+    background: linear-gradient(135deg, #1565c0 0%, #0d47a1 100%);
+    padding: 5.5rem 0 4rem;
+    text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .contact-hero::before {
+    content: ''; position: absolute; left: -80px; top: -80px;
+    width: 340px; height: 340px; border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+  }
+  .contact-hero::after {
+    content: ''; position: absolute; right: -60px; bottom: -100px;
+    width: 280px; height: 280px; border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+  }
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 7px;
+    background: rgba(255,255,255,0.14);
+    border: 1px solid rgba(255,255,255,0.22);
+    border-radius: 50px; padding: 0.3rem 1rem;
+    color: rgba(255,255,255,0.9); font-size: 0.78rem;
+    font-weight: 600; letter-spacing: 0.05em; margin-bottom: 1.25rem;
+    position: relative; z-index: 1;
+  }
+  .contact-hero h1 {
+    color: #fff; font-size: 2.6rem; font-weight: 700;
+    margin-bottom: 0.9rem; line-height: 1.2;
+    position: relative; z-index: 1;
+  }
+  .contact-hero p {
+    color: rgba(255,255,255,0.78); font-size: 0.97rem;
+    max-width: 520px; margin: 0 auto;
+    line-height: 1.75; position: relative; z-index: 1;
+  }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  /* ── Main contact area ── */
+  .contact-section { padding: 4rem 0 5rem; background: #f4f7fe; }
 
-}
-
-body {
-
-}
-
-nav {
-    font-family: sans-serif;
-}
-
-.navbar-brand {
-    font-size: 20px;
-    font-family: Georgia, 'Times New Roman', Times, serif;
-}
-
-
-section{
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background: #fff;
-    font-family: sans-serif;
-}
-
-section::before
-{
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 50%;
-    height: 100%;
-    background: #fff;
-
-}
-
-section .container
-{
-    position: relative;
-    min-width: 1100px;
-    min-height: 570px;
-    display: flex;
-    z-index: 1000;
-}
-
-section .container .contactinfo
-{
-    position: absolute;
-    top: 40px;
-    width: 350px;
-    height: calc(100% - 80px);
-    background: #0f3959;
-    z-index: 1;
-    padding: 40px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    box-shadow: 0 20px 20px rgba(0,0,0,0.2);
-}
-
-section .container .contactinfo h2
-{
-    color: #ffffff;
-    font-size: 24px;
-    font-weight: 500;
-}
-
-section .container .contactinfo .info
-{
-    position: relative;
-    margin: 20px 0;
-}
-
-section .container .contactinfo li{
-        position: relative;
-        list-style: none;
-        display: flex;
-        margin: 20px 0;
-        cursor: pointer;
-        align-items: flex-start;
-}
-
-section .container .contactinfo li span:nth-child(1)
-{
-    width: 30px;
-    min-width: 30px;
-}
-
-section .container .contactinfo li span:nth-child(1) i
-{
-    max-width: 100%;
-    filter: invert(1);
-    opacity: 0.5;
-}
-
-
-section .container .contactinfo li span:nth-child(2)
-{
-    color: #ffffff;
-    margin-left: 10px;
-    font-weight: 300;
-    opacity: 0.5;
-}
-
-section .container .contactinfo li:hover span:nth-child(1) i,
-section .container .contactinfo li:hover span:nth-child(2)
-    {
-        opacity: 1;
-    }
-
-section .container .contactinfo .sci
-{
-    position: relative;
-    display: flex;
-
-}
-
-section .container .contactinfo .sci li
-{
-    list-style: none;
-    margin-right: 15px;
-}
-
-section .container .contactinfo .sci li a
-{
+  /* ── Info panel (left) ── */
+  .info-panel {
+    background: linear-gradient(145deg, #1565c0 0%, #0d47a1 100%);
+    border-radius: 20px; padding: 2.5rem 2rem;
+    color: #fff; height: 100%;
+    position: relative; overflow: hidden;
+  }
+  .info-panel::before {
+    content: ''; position: absolute; right: -40px; top: -50px;
+    width: 180px; height: 180px; border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+  }
+  .info-panel::after {
+    content: ''; position: absolute; right: 40px; bottom: -60px;
+    width: 140px; height: 140px; border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+  }
+  .info-panel h4 {
+    font-size: 1.2rem; font-weight: 700; margin-bottom: 0.4rem;
+    position: relative; z-index: 1;
+  }
+  .info-panel .info-sub {
+    font-size: 0.82rem; color: rgba(255,255,255,0.68);
+    margin-bottom: 2rem; position: relative; z-index: 1;
+  }
+  .info-item {
+    display: flex; align-items: flex-start; gap: 14px;
+    margin-bottom: 1.4rem; position: relative; z-index: 1;
+  }
+  .info-item-icon {
+    width: 38px; height: 38px; border-radius: 10px; flex-shrink: 0;
+    background: rgba(255,255,255,0.15);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .info-item-icon i { color: #fff; font-size: 0.9rem; }
+  .info-item-label {
+    font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.06em; color: rgba(255,255,255,0.6); margin-bottom: 2px;
+  }
+  .info-item-value {
+    font-size: 0.87rem; color: rgba(255,255,255,0.9); line-height: 1.55;
+  }
+  .info-divider {
+    border-color: rgba(255,255,255,0.15); margin: 1.5rem 0;
+    position: relative; z-index: 1;
+  }
+  .hours-row {
+    display: flex; justify-content: space-between;
+    font-size: 0.82rem; margin-bottom: 0.4rem;
+    position: relative; z-index: 1;
+  }
+  .hours-row .day   { color: rgba(255,255,255,0.65); }
+  .hours-row .time  { color: rgba(255,255,255,0.9);  font-weight: 600; }
+  .social-row {
+    display: flex; gap: 10px; margin-top: 2rem;
+    position: relative; z-index: 1;
+  }
+  .social-row a {
+    width: 36px; height: 36px; border-radius: 9px;
+    background: rgba(255,255,255,0.15);
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(255,255,255,0.8); font-size: 0.88rem;
     text-decoration: none;
-}
+    transition: background 0.15s, color 0.15s;
+  }
+  .social-row a:hover { background: rgba(255,255,255,0.3); color: #fff; }
 
-section .container .contactinfo .sci li a i
-{
-    filter: invert(1);
-    opacity: 0.5;
-}
-
-section .container .contactinfo .sci li:hover a i
-{
-    opacity: 1;
-}
-
-section .container .contactForm
-{
-    position: absolute;
-    padding: 70px 50px;
-    background: #ffffff;
-    margin-left: 150px;
-    padding-left: 250px;
-    width: calc(100% - 150px);
+  /* ── Form card (right) ── */
+  .form-card {
+    background: #fff; border-radius: 20px;
+    padding: 2.5rem 2.25rem;
+    box-shadow: 0 4px 30px rgba(21,101,192,0.1);
     height: 100%;
-    box-shadow: 0 50px 50px rgba(0,0,0,0.5);
+  }
+  .form-card h4 {
+    font-size: 1.2rem; font-weight: 700; color: #1a1a2e; margin-bottom: 0.3rem;
+  }
+  .form-card .form-sub {
+    font-size: 0.83rem; color: #6b7280; margin-bottom: 1.75rem;
+  }
+  .field-label {
+    font-size: 0.72rem; font-weight: 700; color: #6b7280;
+    text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.4rem;
+    display: block;
+  }
+  .form-card .input-group-text {
+    background: #f9fafb; border-right: none; color: #9ca3af;
+  }
+  .form-card .form-control {
+    border-left: none; font-size: 0.9rem;
+    font-family: 'Poppins', sans-serif;
+  }
+  .form-card .form-control:focus {
+    box-shadow: none; border-color: #1565c0;
+  }
+  .form-card .form-control:focus + .input-group-text,
+  .form-card .input-group:focus-within .input-group-text {
+    border-color: #1565c0;
+  }
+  .form-card textarea.form-control { border-left: 1px solid #ced4da; resize: none; }
+  .form-card textarea.form-control:focus { border-color: #1565c0; }
 
-}
-
-section .container .contactForm h2
-{
-    color: #0f3959;
-    font-size: 24px;
-    font-weight: 500;
-}
-
-section .container .contactForm .formBox
-{
-    position: relative;
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    padding-top: 30px;
-}
-
-section .container .contactForm .formBox .inputBox
-{
-    position: relative;
-    margin: 0 0 35px 0;
-}
-
-section .container .contactForm .formBox .inputBox.w50
-{
-    width: 47%;
-    color: #0b3e70;
-}
-
-section .container .contactForm .formBox .inputBox.w100
-{
-    width: 100%;
-}
-
-section .container .contactForm .formBox .inputBox input,
-section .container .contactForm .formBox .inputBox textarea
-{
-        width: 100% !important;
-        padding: 5px 0;
-        resize: none;
-        font-size: 18px;
-        font-weight: 300;
-        color: #0b3e70;
-        border: none;
-        border-bottom: 1px solid #777777;
-        outline: none;
-}
-
-section .container .contactForm .formBox .inputBox textarea
-{
-    min-height: 120px;
-}
-
-section .container .contactForm .formBox .inputBox span
-{
-    position: absolute;
-    left: 0;
-    padding: 5px 0;
-    font-size: 18px;
-    font-weight: 300;
-    color: #333333;
-    transition: 0.5s;
-    pointer-events: none;
-}
-
-section .container .contactForm .formBox .inputBox input:focus ~ span,
-section .container .contactForm .formBox .inputBox textarea:focus ~ span,
-section .container .contactForm .formBox .inputBox input:valid ~ span,
-section .container .contactForm .formBox .inputBox textarea:valid ~ span
-{
-    transform: translateY(-20px);
-    font-size: 12px;
-    font-weight: 400;
-    letter-spacing: 1px;
-}
-
-section .container .formBox .inputBox input[type=submit]
-{
-    position: relative;
+  .btn-send {
+    background: linear-gradient(135deg, #1565c0, #0d47a1);
+    color: #fff; border: none; border-radius: 10px;
+    padding: 0.75rem 2rem; font-weight: 700; font-size: 0.95rem;
+    box-shadow: 0 6px 20px rgba(21,101,192,0.35);
+    display: inline-flex; align-items: center; gap: 8px;
+    transition: transform 0.15s, box-shadow 0.15s;
     cursor: pointer;
-    background: #0b3e70;
-    color: #0b3e70;
-    border: none;
-    max-width: 150px;
-    padding: 12px;
-}
-
-section .container .formBox .inputBox input[type=submit]:hover
-{
-    background: #333333;
-}
-
-.fa-facebook,
-.fa-twitter,
-.fa-google-plus-g,
-.fa-instagram,
-.fa-youtube {
-    color: #b2bbc1;
-    font-size: 2.3em;
-}
-
-.fa-facebook:hover,
-.fa-twitter:hover,
-.fa-google-plus-g:hover,
-.fa-instagram:hover,
-.fa-youtube:hover {
-    color: #d5d5d5;
-}
-
-.btn{
-    width: 100%;
+  }
+  .btn-send:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgba(21,101,192,0.45);
     color: #fff;
-    background-color: #0b3e70;
-}
+  }
 
+  /* success banner */
+  .msg-success {
+    background: #f0fdf4; border: 1.5px solid #bbf7d0;
+    border-radius: 12px; padding: 1rem 1.25rem;
+    display: flex; align-items: center; gap: 10px;
+    font-size: 0.88rem; color: #15803d; font-weight: 600;
+    margin-bottom: 1.5rem;
+  }
+  .msg-success i { font-size: 1.1rem; flex-shrink: 0; }
+
+  /* ── CTA ── */
+  .cta-section {
+    background: linear-gradient(135deg, #1565c0 0%, #0d47a1 100%);
+    padding: 4rem 0; text-align: center; position: relative; overflow: hidden;
+  }
+  .cta-section::before {
+    content: ''; position: absolute; left: -80px; top: -80px;
+    width: 300px; height: 300px; border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+  }
+  .cta-section h2 { color: #fff; font-size: 1.9rem; font-weight: 700; margin-bottom: 0.65rem; }
+  .cta-section p  { color: rgba(255,255,255,0.78); font-size: 0.95rem; margin-bottom: 1.75rem; }
+  .btn-hero-white {
+    background: #fff; color: #1565c0; border: none; border-radius: 10px;
+    padding: 0.7rem 1.75rem; font-weight: 700; font-size: 0.92rem;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.18);
+    text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .btn-hero-white:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(0,0,0,0.22); color: #1565c0; text-decoration: none; }
+  .btn-hero-outline {
+    background: transparent; color: #fff;
+    border: 1.5px solid rgba(255,255,255,0.5); border-radius: 10px;
+    padding: 0.7rem 1.75rem; font-weight: 600; font-size: 0.92rem;
+    text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+    transition: background 0.15s;
+  }
+  .btn-hero-outline:hover { background: rgba(255,255,255,0.12); color: #fff; text-decoration: none; }
+
+  /* ── Footer ── */
+  .site-footer { background: #0d1b2e; color: rgba(255,255,255,0.7); padding: 4rem 0 2rem; }
+  .footer-brand { color: #fff; font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem; }
+  .footer-brand i { margin-right: 6px; color: #90caf9; }
+  .footer-tagline { font-size: 0.83rem; color: rgba(255,255,255,0.5); margin-bottom: 1.5rem; }
+  .footer-heading { color: #fff; font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 1rem; }
+  .footer-links { list-style: none; padding: 0; margin: 0; }
+  .footer-links li { margin-bottom: 0.5rem; }
+  .footer-links a { color: rgba(255,255,255,0.55); font-size: 0.85rem; text-decoration: none; transition: color 0.15s; }
+  .footer-links a:hover { color: #fff; text-decoration: none; }
+  .footer-contact-item { display: flex; align-items: flex-start; gap: 10px; font-size: 0.83rem; color: rgba(255,255,255,0.55); margin-bottom: 0.65rem; }
+  .footer-contact-item i { color: #90caf9; margin-top: 2px; flex-shrink: 0; }
+  .footer-divider { border-color: rgba(255,255,255,0.1); margin: 2.5rem 0 1.5rem; }
+  .footer-bottom { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem; font-size: 0.8rem; color: rgba(255,255,255,0.4); }
+  .footer-social { display: flex; gap: 10px; }
+  .footer-social a {
+    width: 34px; height: 34px; border-radius: 8px; background: rgba(255,255,255,0.08);
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(255,255,255,0.6); font-size: 0.85rem;
+    text-decoration: none; transition: background 0.15s, color 0.15s;
+  }
+  .footer-social a:hover { background: #1565c0; color: #fff; }
+
+  @media (max-width: 767px) {
+    .contact-hero h1 { font-size: 2rem; }
+    .info-panel { margin-bottom: 1.5rem; }
+  }
 </style>
-</head>
-<body>
-    <header>
-            <!--Navigation Bar-->
-			<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-                <a class="navbar-brand" href="https://www.webmobinfo.ch/"><b>WEBMOB</b></a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarCollapse">
-                    <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'index' %}">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'about' %}">About Us</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'help' %}">Help</a>
-                    </li>
-                    <li class="nav-item active">
-                        <a class="nav-link" href="{% url 'contact' %}">Contact Us</a>
-                    </li>
-                    <li class="nav-item">
-		                <a class="nav-link" href="{% url 'login' %}">Login</a>
-		            </li>
-		            <li class="nav-item">
-			            <a class="nav-link" href="{% url 'register' %}">Sign Up</a>
-		            </li>
-                    </ul>
-                </div>
-            </nav>
-    </header><br>
-    <form method="post" id="form1" action="{% url 'contact' %}">
-    {% csrf_token %}
-        <section>
-        <div class="container">
-            <div class="contactinfo">
-                <div>
-                    <h2>Contact Information</h2>
-                    <ul class="info">
-                        <li>
-                            <span><i class="fa fa-map-marker" aria-hidden="true"></i></span>
-                            <span>Bestech Business Tower-A, Suite no 829,<br />
-                                Sector – 66, Mohali, Punjab 160066<br />
-                                INDIA
-                            </span>
-                        </li>
-                        <li>
-                            <span><i class="fa fa-envelope" aria-hidden="true"></i></span>
-                            <span>info@webmobinfo.ch</span>
-                        </li>
-                        <li>
-                            <span><i class="fa fa-phone" aria-hidden="true"></i></span>
-                            <span>0172-4045981</span>
-                        </li>
-                    </ul>
-                    </div>
-                    <ul class="sci">
-                        <li><a href="https://www.webmobinfo.ch/"><i class="fab fa-google-plus-g"></i></a></li>
-                    </ul>
+{% endblock %}
+
+{% block content %}
+
+<!-- ════════════════════ HERO ════════════════════ -->
+<section class="contact-hero">
+  <div class="container">
+    <div class="hero-tag"><i class="fas fa-envelope"></i> Contact Us</div>
+    <h1>Get in Touch</h1>
+    <p>Have a question, a suggestion, or need help? Send us a message and we'll get back to you as soon as possible.</p>
+  </div>
+</section>
+
+<!-- ════════════════════ CONTACT BODY ════════════════════ -->
+<div class="contact-section">
+  <div class="container">
+    <div class="row align-items-stretch">
+
+      <!-- ── Left: Info panel ── -->
+      <div class="col-lg-4 mb-4 mb-lg-0 d-flex">
+        <div class="info-panel w-100">
+          <h4>Contact Information</h4>
+          <p class="info-sub">Reach out through any of the channels below or use the form.</p>
+
+          <div class="info-item">
+            <div class="info-item-icon"><i class="fas fa-map-marker-alt"></i></div>
+            <div>
+              <div class="info-item-label">Address</div>
+              <div class="info-item-value">1901/B, Om Vikas Tower<br>Mumbai, Maharashtra 400006<br>India</div>
             </div>
-            <div class="contactForm">
-                <h2>Send a Message</h2>
-                <div class="formBox">
-                    <div class="inputBox w50">
-                        <input type="" required>
-                        <span>First Name</span>
-                    </div>
-                    <div class="inputBox w50">
-                        <input type="" required>
-                        <span>Last Name</span>
-                    </div>
-                    <div class="inputBox w50">
-                        <input type="email" required>
-                        <span>E-mail Address</span>
-                    </div>
-                    <div class="inputBox w50">
-                        <input type="" required>
-                        <span>Mobile Number</span>
-                    </div>
-                    <div class="inputBox w100">
-                        <textarea name="message" id="inputBox w-50" TextMode="MultiLine" required></textarea>
-                        <span>Write Your Message Here...</span>
-                    </div>
-                    <div class="inputBox w100">
-                        <button class="btn" type="submit" >Send</button>
-                    </div>
-                </div>
+          </div>
+
+          <div class="info-item">
+            <div class="info-item-icon"><i class="fas fa-envelope"></i></div>
+            <div>
+              <div class="info-item-label">Email</div>
+              <div class="info-item-value">contactus@ttgs.com</div>
             </div>
+          </div>
+
+          <div class="info-item">
+            <div class="info-item-icon"><i class="fas fa-phone"></i></div>
+            <div>
+              <div class="info-item-label">Phone</div>
+              <div class="info-item-value">+91 9823451278</div>
+            </div>
+          </div>
+
+          <hr class="info-divider">
+
+          <div class="info-item-label" style="position:relative;z-index:1;margin-bottom:0.75rem;">Office Hours</div>
+          <div class="hours-row"><span class="day">Monday – Friday</span><span class="time">9:00 AM – 5:00 PM</span></div>
+          <div class="hours-row"><span class="day">Saturday</span><span class="time">10:00 AM – 4:00 PM</span></div>
+          <div class="hours-row"><span class="day">Sunday</span><span class="time">Closed</span></div>
+
+          <div class="social-row">
+            <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+            <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" title="YouTube"><i class="fab fa-youtube"></i></a>
+          </div>
         </div>
-      </section>
-    </form>
-</body>
-</html>
+      </div>
+
+      <!-- ── Right: Form card ── -->
+      <div class="col-lg-8 d-flex">
+        <div class="form-card w-100">
+          <h4>Send Us a Message</h4>
+          <p class="form-sub">Fill in the form below and we'll respond within one business day.</p>
+
+          {% if request.method == "POST" %}
+          <div class="msg-success">
+            <i class="fas fa-check-circle"></i>
+            Your message has been sent successfully. We'll be in touch soon!
+          </div>
+          {% endif %}
+
+          <form method="post" action="{% url 'contact' %}">
+            {% csrf_token %}
+
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group mb-3">
+                  <label class="field-label">First Name</label>
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="fas fa-user"></i></span>
+                    </div>
+                    <input type="text" name="first_name" class="form-control" placeholder="e.g. John" required>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group mb-3">
+                  <label class="field-label">Last Name</label>
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="fas fa-user"></i></span>
+                    </div>
+                    <input type="text" name="last_name" class="form-control" placeholder="e.g. Smith" required>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group mb-3">
+                  <label class="field-label">Email Address</label>
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                    </div>
+                    <input type="email" name="email" class="form-control" placeholder="you@example.com" required>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group mb-3">
+                  <label class="field-label">Phone <span style="font-weight:400;text-transform:none;letter-spacing:0;">(optional)</span></label>
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                    </div>
+                    <input type="tel" name="phone" class="form-control" placeholder="+91 98765 43210">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group mb-4">
+              <label class="field-label">Message</label>
+              <textarea name="message" class="form-control" rows="5"
+                        placeholder="Write your message here…" required></textarea>
+            </div>
+
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+              <p style="font-size:0.78rem;color:#9ca3af;margin:0;">
+                <i class="fas fa-lock mr-1"></i>Your information is kept private and never shared.
+              </p>
+              <button type="submit" class="btn-send">
+                <i class="fas fa-paper-plane"></i> Send Message
+              </button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════ CTA ════════════════════ -->
+<section class="cta-section">
+  <div class="container" style="position:relative;z-index:1;">
+    <h2>Looking for step-by-step guidance?</h2>
+    <p>Visit our Help Centre for detailed instructions on using TTGS.</p>
+    <div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap;">
+      <a href="{% url 'help' %}"     class="btn-hero-white"><i class="fas fa-question-circle"></i> Help Centre</a>
+      <a href="{% url 'register' %}" class="btn-hero-outline"><i class="fas fa-user-plus"></i> Create Account</a>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════ FOOTER ════════════════════ -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4 mb-4">
+        <div class="footer-brand"><i class="fas fa-graduation-cap"></i>TTGS</div>
+        <div class="footer-tagline">Timetable Generation System</div>
+        <p style="font-size:0.83rem;color:rgba(255,255,255,0.5);line-height:1.7;">
+          An intelligent, automated scheduling platform for colleges and universities powered by a genetic algorithm.
+        </p>
+      </div>
+      <div class="col-sm-4 col-lg-2 mb-4 offset-lg-1">
+        <div class="footer-heading">Navigation</div>
+        <ul class="footer-links">
+          <li><a href="{% url 'index' %}"><i class="fas fa-home mr-1"></i> Home</a></li>
+          <li><a href="{% url 'about' %}"><i class="fas fa-info-circle mr-1"></i> About Us</a></li>
+          <li><a href="{% url 'help' %}"><i class="fas fa-question-circle mr-1"></i> Help</a></li>
+          <li><a href="{% url 'contact' %}"><i class="fas fa-envelope mr-1"></i> Contact</a></li>
+        </ul>
+      </div>
+      <div class="col-sm-4 col-lg-2 mb-4">
+        <div class="footer-heading">Account</div>
+        <ul class="footer-links">
+          <li><a href="{% url 'login' %}"><i class="fas fa-sign-in-alt mr-1"></i> Log In</a></li>
+          <li><a href="{% url 'register' %}"><i class="fas fa-user-plus mr-1"></i> Register</a></li>
+        </ul>
+      </div>
+      <div class="col-sm-4 col-lg-3 mb-4">
+        <div class="footer-heading">Contact</div>
+        <div class="footer-contact-item"><i class="fas fa-envelope"></i> contactus@ttgs.com</div>
+        <div class="footer-contact-item"><i class="fas fa-phone"></i> +91 9823451278</div>
+        <div class="footer-contact-item"><i class="fas fa-map-marker-alt"></i> 1901/B, Om Vikas,<br>Mumbai, Maharashtra 400006</div>
+      </div>
+    </div>
+    <hr class="footer-divider">
+    <div class="footer-bottom">
+      <span>&copy; 2026 TTGS. All rights reserved.</span>
+      <div class="footer-social">
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-youtube"></i></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+{% endblock %}

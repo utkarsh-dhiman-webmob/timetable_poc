@@ -1,0 +1,109 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}TTGS | Timetable Generator{% endblock %}</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  {% block extra_head %}{% endblock %}
+  <style>
+    body { padding-top: 60px; font-family: 'Poppins', sans-serif; }
+    .ttgs-nav {
+      background: linear-gradient(135deg, #1565c0 0%, #0d47a1 100%);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+    .ttgs-nav .navbar-brand {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      font-size: 1.15rem;
+      letter-spacing: 0.5px;
+      color: #fff !important;
+    }
+    .ttgs-nav .navbar-brand i { margin-right: 6px; }
+    .ttgs-nav .nav-link {
+      color: rgba(255,255,255,0.85) !important;
+      font-weight: 500;
+      font-size: 0.88rem;
+      padding: 0.45rem 0.8rem !important;
+      border-radius: 0.35rem;
+      transition: all 0.2s;
+    }
+    .ttgs-nav .nav-link:hover {
+      color: #fff !important;
+      background: rgba(255,255,255,0.15);
+    }
+    .ttgs-nav .nav-item.active .nav-link {
+      color: #fff !important;
+      background: rgba(255,255,255,0.18);
+    }
+    .ttgs-nav .navbar-toggler { border-color: rgba(255,255,255,0.4); }
+    .ttgs-nav .navbar-toggler-icon {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255,255,255,0.9)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    }
+    .ttgs-nav .btn-nav-outline {
+      border: 1.5px solid rgba(255,255,255,0.55);
+      color: #fff !important;
+      border-radius: 0.35rem;
+      padding: 0.35rem 0.9rem !important;
+      font-weight: 600;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+    }
+    .ttgs-nav .btn-nav-outline:hover { background: rgba(255,255,255,0.15); border-color: #fff; }
+    .ttgs-nav .btn-nav-solid {
+      background: #fff;
+      color: #1a73e8 !important;
+      border-radius: 0.35rem;
+      padding: 0.35rem 0.9rem !important;
+      font-weight: 700;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+    }
+    .ttgs-nav .btn-nav-solid:hover { background: #e8f0fe; }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar navbar-expand-md ttgs-nav fixed-top">
+    <a class="navbar-brand" href="{% url 'index' %}">
+      <i class="fas fa-graduation-cap"></i>TTGS
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarPublic"
+            aria-controls="navbarPublic" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarPublic">
+      <ul class="navbar-nav ml-auto align-items-center">
+        <li class="nav-item {% block nav_home %}{% endblock %}">
+          <a class="nav-link" href="{% url 'index' %}">Home</a>
+        </li>
+        <li class="nav-item {% block nav_about %}{% endblock %}">
+          <a class="nav-link" href="{% url 'about' %}">About Us</a>
+        </li>
+        <li class="nav-item {% block nav_help %}{% endblock %}">
+          <a class="nav-link" href="{% url 'help' %}">Help</a>
+        </li>
+        <li class="nav-item {% block nav_contact %}{% endblock %}">
+          <a class="nav-link" href="{% url 'contact' %}">Contact</a>
+        </li>
+        <li class="nav-item ml-2">
+          <a class="nav-link btn-nav-outline" href="{% url 'login' %}">Log In</a>
+        </li>
+        <li class="nav-item ml-1">
+          <a class="nav-link btn-nav-solid" href="{% url 'register' %}">Sign Up</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  {% block content %}{% endblock %}
+
+  {% block extra_js %}{% endblock %}
+</body>
+</html>
